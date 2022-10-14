@@ -24,8 +24,8 @@
             android:text="Sign In"
             android:textColor="@color/white"
             android:textSize="20dp"
+            android:id="@+id/signIn"
             android:textStyle="bold">
-
         </TextView>
 
     </LinearLayout>
@@ -69,6 +69,7 @@
             android:background="@drawable/roundedrectangle"
             android:hint="Name"
             android:inputType="text"
+            android:textColor="@color/black"
             android:textColorHint="#D4B300">
         </EditText>
 
@@ -89,6 +90,7 @@
             android:background="@drawable/roundedrectangle"
             android:hint="Email"
             android:inputType="text"
+            android:textColor="@color/black"
             android:textColorHint="#D4B300">
         </EditText>
 
@@ -108,6 +110,7 @@
             android:padding="10dp"
             android:background="@drawable/roundedrectangle"
             android:hint="Password"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:textColorHint="#D4B300">
         </EditText>
@@ -140,28 +143,53 @@
         android:orientation="horizontal"
         android:weightSum="3"
         android:paddingHorizontal="50dp">
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/genderRadioGroup"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/male"
-            android:layout_weight="1">
+            <RadioButton
+                android:id="@+id/maleRadio"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:background="@drawable/malemain"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:textColor="@android:color/transparent"
+                android:text="Male">
 
-        </ImageView>
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/female"
-            android:layout_weight="1">
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/femaleRadio"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:background="@drawable/femalemain"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:textColor="@android:color/transparent"
+                android:text="Female">
 
-        </ImageView>
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/binary"
-            android:layout_weight="1">
+            </RadioButton>
+            <RadioButton
+                android:id="@+id/binaryRadio"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:background="@drawable/binarymain"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:textColor="@android:color/transparent"
+                android:text="Binary">
 
-        </ImageView>
+            </RadioButton>
+
+        </RadioGroup>
+
+
+
 
     </LinearLayout>
 
@@ -196,6 +224,7 @@
         android:paddingHorizontal="20dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/signupButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="13dp"

@@ -63,9 +63,22 @@ public class Signin extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Signin.this, Signup.class));
+                Intent intent = new Intent(Signin.this, Signup.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                Signin.this.finish();
             }
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAuth.getCurrentUser() != null){
+            Intent intent = new Intent(Signin.this, MainScreen.class);
+            startActivity(intent);
+        }
+    }
+
 }

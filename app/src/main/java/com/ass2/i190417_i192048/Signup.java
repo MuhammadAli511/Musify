@@ -99,18 +99,13 @@ public class Signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Signup.this, Signin.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                Signup.this.finish();
             }
         });
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(Signup.this, MainScreen.class);
-            startActivity(intent);
-        }
-    }
+
 }

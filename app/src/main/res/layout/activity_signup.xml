@@ -156,7 +156,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/malemain"
                 android:button="@android:color/transparent"
-                android:checked="false"
+                android:checked="true"
                 android:textColor="@android:color/transparent"
                 android:text="Male">
 
@@ -201,9 +201,9 @@
         android:gravity="center">
 
         <CheckBox
+            android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
         </CheckBox>
 
         <TextView
@@ -224,7 +224,7 @@
         android:paddingHorizontal="20dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/signupButton"
+            android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="13dp"

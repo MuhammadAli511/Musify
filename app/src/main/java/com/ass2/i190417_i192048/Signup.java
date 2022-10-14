@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ public class Signup extends AppCompatActivity {
     Button signup;
     CheckBox terms;
     FirebaseAuth mAuth;
+    TextView signin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class Signup extends AppCompatActivity {
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
         signup = findViewById(R.id.signup);
         terms = findViewById(R.id.checkbox);
+        signin = findViewById(R.id.signin);
         mAuth = FirebaseAuth.getInstance();
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +95,21 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+        signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Signup.this, Signin.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(Signup.this, Signin.class);
+            Intent intent = new Intent(Signup.this, MainScreen.class);
             startActivity(intent);
         }
     }

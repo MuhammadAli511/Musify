@@ -24,7 +24,7 @@
             android:text="Sign In"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:id="@+id/signIn"
+            android:id="@+id/signin"
             android:textStyle="bold">
         </TextView>
 

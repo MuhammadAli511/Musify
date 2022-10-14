@@ -50,20 +50,6 @@
             android:textAllCaps="false">
         </com.google.android.material.button.MaterialButton>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_margin="10dp"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:paddingVertical="13dp"
-            app:backgroundTint="#DFB300"
-            android:id="@+id/recordMusic"
-            app:cornerRadius="20dp"
-            android:text="Record Music"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textAllCaps="false">
-        </com.google.android.material.button.MaterialButton>
-
     </LinearLayout>
 
     <LinearLayout

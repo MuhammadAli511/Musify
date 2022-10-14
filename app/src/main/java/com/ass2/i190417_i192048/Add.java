@@ -20,7 +20,6 @@ public class Add extends AppCompatActivity {
         back = findViewById(R.id.back);
         addPlaylist = findViewById(R.id.addPlaylist);
         uploadMusic = findViewById(R.id.uploadMusic);
-        recordMusic = findViewById(R.id.recordMusic);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,13 +35,6 @@ public class Add extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Add.this, UploadMusic.class));
-            }
-        });
-
-        recordMusic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Add.this, RecordMusic.class));
             }
         });
 

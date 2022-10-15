@@ -23,7 +23,7 @@ public class MainScreen extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainScreen.this, Add.class));
+                startActivity(new Intent(MainScreen.this, UploadMusic.class));
             }
         });
 

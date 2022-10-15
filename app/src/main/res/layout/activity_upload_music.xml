@@ -40,14 +40,66 @@
             </TextView>
 
         </LinearLayout>
-        <ImageView
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:src="@drawable/cloud"
-            android:id="@+id/uploadImage"
-            android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal">
 
-        </ImageView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:backgroundTint="@color/yellow"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"
+                    android:text="Upload Music"
+                    android:src="@drawable/cloud"
+                    android:id="@+id/uploadMusic"
+                    android:layout_gravity="center">
+
+                </Button>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Music"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:textSize="16dp">
+
+                </TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/cloud"
+                    android:id="@+id/uploadImage"
+                    android:layout_gravity="center">
+
+                </ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Image"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:textSize="16dp">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
         <LinearLayout
             android:paddingTop="20dp"
             android:layout_width="match_parent"
@@ -150,9 +202,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -34,13 +34,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Add"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainScreen"
             android:exported="false">
             <meta-data

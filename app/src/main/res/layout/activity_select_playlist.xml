@@ -5,7 +5,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainScreen">
+    tools:context=".SelectPlaylist">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skip"
+                android:textSize="20dp"
+                android:id="@+id/skip"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/yellow">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Playlist"
+                android:textColor="@color/white"
+                android:textSize="28dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="50dp">
+
+            </TextView>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+            </View>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:textSize="20dp"
+                android:id="@+id/next"
+                android:layout_marginRight="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerView">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/plusone"
+        android:id="@+id/addPlaylistButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="15dp">
+
+    </ImageView>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -176,6 +176,7 @@ public class MainScreen extends AppCompatActivity  {
                         mediaPlayer.seekTo(0);
                         seekBar.setProgress(0);
                         // this line (return) should be changed to something productive
+                        // may restart activity or play the next coming music
                         return;
                     }
 

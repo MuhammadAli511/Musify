@@ -84,7 +84,7 @@ public class UploadMusic extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (title.getText().toString().isEmpty() || genre.getText().toString().isEmpty() || description.getText().toString().isEmpty()) {
+                if (title.getText().toString().isEmpty() || genre.getText().toString().isEmpty() || description.getText().toString().isEmpty() || imageURI == null || musicURI == null) {
                     Toast.makeText(UploadMusic.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     StorageReference audioRef = storageRef.child("audio/" + title.getText().toString());

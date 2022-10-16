@@ -11,8 +11,136 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="645dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Song Title"
+                android:textColor="@color/white"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="76dp"
+                android:layout_marginLeft="80dp"
+                android:src="@drawable/triangle" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="By Artist"
+            android:textColor="#Cbc115"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:src="@drawable/despacito" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fastbackward" />
+
+            <ImageView
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/to_play_16"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/playone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fastforward" />
+
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="328dp"
+            android:layout_height="44dp"
+            android:thumbTint="#Cbc115"
+            android:layout_gravity="center"/>
+
+<!--        <ImageView-->
+<!--            android:layout_width="328dp"-->
+<!--            android:layout_height="44dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/line" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="60dp"
+            android:text="0:00"
+            android:textColor="#Cbc115" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginLeft="30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/whiteheart" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/download" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/linemusic" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/msg" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/dots" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+
 
         <LinearLayout
             android:background="#2a2730"

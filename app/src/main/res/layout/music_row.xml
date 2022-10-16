@@ -12,7 +12,7 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:id="@+id/playListImage">
+            android:id="@+id/musicImage">
         </ImageView>
 
         <TextView
@@ -22,7 +22,7 @@
             android:textColor="@color/white"
             android:textSize="15dp"
             android:gravity="center"
-            android:id="@+id/playListName">
+            android:id="@+id/musicTitle">
         </TextView>
     </LinearLayout>
 </LinearLayout>

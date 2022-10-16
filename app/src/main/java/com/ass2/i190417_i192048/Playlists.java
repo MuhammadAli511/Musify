@@ -1,17 +1,13 @@
 package com.ass2.i190417_i192048;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Playlists {
-    public String playlistName;
-    public String imageURL;
-    public List<Music> musicList;
+    String playlistName;
+    String imageURL;
 
     public Playlists(String playlistName, String imageURL) {
         this.playlistName = playlistName;
         this.imageURL = imageURL;
-        musicList = new ArrayList<>();
     }
 
     public String getPlaylistName() {
@@ -30,11 +26,4 @@ public class Playlists {
         this.imageURL = imageURL;
     }
 
-    public List<Music> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(List<Music> musicList) {
-        this.musicList = musicList;
-    }
 }

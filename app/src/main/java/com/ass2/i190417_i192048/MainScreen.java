@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -28,6 +29,11 @@ public class MainScreen extends AppCompatActivity {
     List<Playlists> playlistsList;
     PlaylistAdapter playlistAdapter;
 
+    RecyclerView musicRecyclerViewMain;
+    List<Music> musicList;
+    MusicAdapter musicAdapter;
+
+
 
 
 
@@ -36,18 +42,32 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        // Variables
         liked = findViewById(R.id.liked);
         add = findViewById(R.id.add);
         search = findViewById(R.id.search);
         listenlater = findViewById(R.id.listenlater);
-        playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
-        playlistsList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
+        playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
+        playlistsList = new ArrayList<>();
+
+        musicRecyclerViewMain = findViewById(R.id.musicRecyclerViewMain);
+        musicList = new ArrayList<>();
+
+
+
+
+        // Layouts
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         playlistRecyclerViewMain.setLayoutManager(layoutManager);
-
         getData();
+
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        musicRecyclerViewMain.setLayoutManager(layoutManager2);
+        getData2();
+
 
 
 
@@ -74,13 +94,41 @@ public class MainScreen extends AppCompatActivity {
                     playlistRecyclerViewMain.setAdapter(playlistAdapter);
                     playlistAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(MainScreen.this, "Error getting documents.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainScreen.this, "Error getting Playlists.", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-
     }
+
+    public void getData2(){
+
+        db.collection("Music").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Music music = new Music(document.getString("title"), document.getString("imageURL"));
+                        musicList.add(music);
+                    }
+                    musicAdapter = new MusicAdapter(MainScreen.this, musicList);
+                    musicRecyclerViewMain.setAdapter(musicAdapter);
+                    musicAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(MainScreen.this, "Error getting Music.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
 
 
 }

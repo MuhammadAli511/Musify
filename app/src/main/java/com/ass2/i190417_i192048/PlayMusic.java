@@ -59,6 +59,11 @@ public class PlayMusic extends AppCompatActivity {
                     int mCurrentPosition = mediaPlayer.getCurrentPosition();
                     musicSlider.setProgress(mCurrentPosition);
                     currentTime.setText(convertToMMSS(mCurrentPosition +""));
+                    if (mediaPlayer.isPlaying()){
+                        pauseButton.setImageResource(R.drawable.pause);
+                    } else{
+                        pauseButton.setImageResource(R.drawable.playone);
+                    }
                 }
                 new Handler().postDelayed(this, 100);
             }
@@ -96,10 +101,8 @@ public class PlayMusic extends AppCompatActivity {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
-                    pauseButton.setImageResource(R.drawable.playone);
                 } else {
                     mediaPlayer.start();
-                    pauseButton.setImageResource(R.drawable.pause);
                 }
 
             }

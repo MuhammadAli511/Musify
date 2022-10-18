@@ -63,6 +63,7 @@ public class MusicComments extends AppCompatActivity {
             }
         });
 
+
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,9 +77,10 @@ public class MusicComments extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
-
                                 Toast.makeText(MusicComments.this, "Comment added", Toast.LENGTH_SHORT).show();
                                 editTextComment.setText("");
+                                commentsList.clear();
+                                getData();
                             } else {
                                 Toast.makeText(MusicComments.this, "Error", Toast.LENGTH_SHORT).show();
                             }
@@ -89,10 +91,6 @@ public class MusicComments extends AppCompatActivity {
         });
 
         songTitle.setText(title);
-
-
-
-
 
     }
 

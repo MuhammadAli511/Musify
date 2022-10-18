@@ -11,9 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+import android.widget.Toast;
+// glide
 import com.bumptech.glide.Glide;
-import com.google.android.material.slider.Slider;
+
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -124,6 +125,7 @@ public class PlayMusic extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (MusicMediaPlayer.currentIndex == musicList.size() - 1) {
+                    Toast.makeText(PlayMusic.this, "No more songs", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 MusicMediaPlayer.currentIndex += 1;

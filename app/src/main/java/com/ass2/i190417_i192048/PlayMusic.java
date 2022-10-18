@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.slider.Slider;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +24,7 @@ public class PlayMusic extends AppCompatActivity {
 
     TextView musicTitle, currentTime;
     SeekBar musicSlider;
-    ImageView musicImage, previousButton, pauseButton, nextButton;
+    ImageView musicImage, previousButton, pauseButton, nextButton, comment;
     List<Music> musicList;
     Music currentSong;
     MediaPlayer mediaPlayer = MusicMediaPlayer.getInstance();
@@ -46,6 +47,17 @@ public class PlayMusic extends AppCompatActivity {
         previousButton = findViewById(R.id.previousButton);
         pauseButton = findViewById(R.id.pauseButton);
         nextButton = findViewById(R.id.nextButton);
+        comment = findViewById(R.id.comment);
+
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlayMusic.this, MusicComments.class);
+                intent.putExtra("title", currentSong.getTitle());
+                intent.putExtra("musicList", (Serializable)musicList);
+                startActivity(intent);
+            }
+        });
 
         try {
             setValues();

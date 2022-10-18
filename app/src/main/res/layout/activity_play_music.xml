@@ -154,6 +154,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:id="@+id/comment"
                 android:src="@drawable/msg">
 
             </ImageView>

@@ -1,6 +1,8 @@
 package com.ass2.i190417_i192048;
 
-public class Music {
+import java.io.Serializable;
+
+public class Music implements Serializable {
     String title;
     String genre;
     String description;
@@ -8,10 +10,7 @@ public class Music {
     String imageURL;
     String userID;
     String playlistName;
-    public Music(String title, String imageURL){
-        this.title = title;
-        this.imageURL = imageURL;
-    }
+
 
     public Music(String title, String genre, String description, String musicURL, String imageURL, String userID) {
         this.title = title;

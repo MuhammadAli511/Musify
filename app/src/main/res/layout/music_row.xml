@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
+        android:id="@+id/musicParentLayout"
         android:orientation="vertical">
         <ImageView
             android:layout_width="120dp"

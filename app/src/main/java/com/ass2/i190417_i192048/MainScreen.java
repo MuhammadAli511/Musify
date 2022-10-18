@@ -108,7 +108,7 @@ public class MainScreen extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Music music = new Music(document.getString("title"), document.getString("imageURL"));
+                        Music music = new Music(document.getString("title"), document.getString("genre"), document.getString("description"), document.getString("musicURL"), document.getString("imageURL"), document.getString("userID"));
                         musicList.add(music);
                     }
                     musicAdapter = new MusicAdapter(MainScreen.this, musicList);
@@ -122,14 +122,12 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (musicAdapter != null) {
+            musicAdapter.notifyDataSetChanged();
+        }
+    }
 }
 

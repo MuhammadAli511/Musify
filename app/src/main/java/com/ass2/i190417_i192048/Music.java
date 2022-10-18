@@ -7,6 +7,7 @@ public class Music {
     String musicURL;
     String imageURL;
     String userID;
+    String playlistName;
     public Music(String title, String imageURL){
         this.title = title;
         this.imageURL = imageURL;
@@ -19,6 +20,14 @@ public class Music {
         this.musicURL = musicURL;
         this.imageURL = imageURL;
         this.userID = userID;
+    }
+
+    public String getPlaylistName() {
+        return playlistName;
+    }
+
+    public void setPlaylistName(String playlistName) {
+        this.playlistName = playlistName;
     }
 
     public String getTitle() {

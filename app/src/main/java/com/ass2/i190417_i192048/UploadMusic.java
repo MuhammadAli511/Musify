@@ -110,7 +110,8 @@ public class UploadMusic extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
                                                             Toast.makeText(UploadMusic.this, "Music Uploaded", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(UploadMusic.this, MainScreen.class);
+                                                            Intent intent = new Intent(UploadMusic.this, SelectPlaylist.class);
+                                                            intent.putExtra("title", title.getText().toString());
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             startActivity(intent);
                                                             UploadMusic.this.finish();

@@ -2,7 +2,9 @@ package com.ass2.i190417_i192048;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,11 +26,12 @@ import java.util.concurrent.TimeUnit;
 public class PlayMusic extends AppCompatActivity {
 
     TextView musicTitle, currentTime;
-    SeekBar musicSlider;
+    SeekBar musicSlider, volumeSlider;
     ImageView musicImage, previousButton, pauseButton, nextButton, comment;
     List<Music> musicList;
     Music currentSong;
     MediaPlayer mediaPlayer = MusicMediaPlayer.getInstance();
+    AudioManager audioManager;
 
 
     @Override
@@ -44,11 +47,33 @@ public class PlayMusic extends AppCompatActivity {
         musicTitle = findViewById(R.id.musicTitle);
         currentTime = findViewById(R.id.currentTime);
         musicSlider = findViewById(R.id.musicSlider);
+        volumeSlider = findViewById(R.id.volumeSlider);
         musicImage = findViewById(R.id.musicImage);
         previousButton = findViewById(R.id.previousButton);
         pauseButton = findViewById(R.id.pauseButton);
         nextButton = findViewById(R.id.nextButton);
         comment = findViewById(R.id.comment);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        volumeSlider.setMax(maxVolume);
+        volumeSlider.setProgress(currentVolume);
+        volumeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override

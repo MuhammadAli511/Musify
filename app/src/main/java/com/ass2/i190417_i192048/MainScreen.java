@@ -34,9 +34,6 @@ public class MainScreen extends AppCompatActivity {
     MusicAdapter musicAdapter;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +53,6 @@ public class MainScreen extends AppCompatActivity {
         musicList = new ArrayList<>();
 
 
-
-
         // Layouts
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         playlistRecyclerViewMain.setLayoutManager(layoutManager);
@@ -67,9 +62,6 @@ public class MainScreen extends AppCompatActivity {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         musicRecyclerViewMain.setLayoutManager(layoutManager2);
         getData2();
-
-
-
 
 
         add.setOnClickListener(new View.OnClickListener() {

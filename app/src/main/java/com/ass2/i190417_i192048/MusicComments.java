@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class MusicComments extends AppCompatActivity {
     List<Comments> commentsList;
     CommentAdapter commentAdapter;
     FirebaseFirestore db;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +49,13 @@ public class MusicComments extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         commentsRecyclerView.setLayoutManager(layoutManager);
+        Intent intentOld = getIntent();
+        title = intentOld.getStringExtra("title");
+        List<Music> musicList = (List<Music>) intentOld.getSerializableExtra("musicList");
         getData();
         // get data from intent
-        Intent intentOld = getIntent();
-        String title = intentOld.getStringExtra("title");
-        List<Music> musicList = (List<Music>) intentOld.getSerializableExtra("musicList");
+
+
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +105,15 @@ public class MusicComments extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Comments comments2 = new Comments(document.getString("commentBody"));
-                        commentsList.add(comments2);
+                        String title2 = document.getString("musicTitle");
+                        if (title2.equals(title)) {
+                            commentsList.add(comments2);
+                        }
                     }
                     commentAdapter = new CommentAdapter(MusicComments.this, commentsList);
                     commentsRecyclerView.setAdapter(commentAdapter);
                 } else {
-                    Toast.makeText(MusicComments.this, "Error getting Playlists.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MusicComments.this, "Error getting Comments.", Toast.LENGTH_SHORT).show();
                 }
 
             }

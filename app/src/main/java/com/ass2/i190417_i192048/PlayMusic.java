@@ -2,6 +2,7 @@ package com.ass2.i190417_i192048;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -29,8 +30,10 @@ public class PlayMusic extends AppCompatActivity {
     List<Music> musicList;
     Music currentSong;
     MediaPlayer mediaPlayer = MusicMediaPlayer.getInstance();
+    TextView changeScreen;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,14 @@ public class PlayMusic extends AppCompatActivity {
         pauseButton = findViewById(R.id.pauseButton);
         nextButton = findViewById(R.id.nextButton);
         comment = findViewById(R.id.comment);
+        changeScreen = findViewById(R.id.record_screen);
+
+        changeScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlayMusic.this,RecordMusic.class));
+            }
+        });
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override

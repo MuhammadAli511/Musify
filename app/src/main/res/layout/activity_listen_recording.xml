@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
     tools:context=".ListenRecording">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="78dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record"
+            android:textColor="@color/white"
+            android:textSize="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"/>
+
+        <Button
+            android:id="@+id/next_to_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#Cbc115"
+            android:textStyle="bold"
+            android:layout_marginLeft="80dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_marginTop="10dp"
+            android:text="Next"
+            android:textSize="20dp"/>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/despacito"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00 /2:45"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:textColor="#Cbc115"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="97dp"
+            android:src="@drawable/stop" />
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/playone"/>
+    </LinearLayout>
+
+
+</LinearLayout>

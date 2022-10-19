@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -170,6 +171,26 @@
 
         </LinearLayout>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/upper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/record_screen"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="410dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Record Music Instead? Click here"
+            android:textColor="#fcfc03" />
 
     </LinearLayout>
 

@@ -102,6 +102,10 @@ public class AddPlaylist extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
 }
 
 
+=======
+}
+>>>>>>> 0a877f9773ae2e86243f451ff35640ee16b317e8

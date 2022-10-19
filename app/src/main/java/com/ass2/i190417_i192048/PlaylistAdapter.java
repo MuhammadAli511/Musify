@@ -1,12 +1,15 @@
 package com.ass2.i190417_i192048;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +40,18 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
-        holder.playlistName.setText(playlistsList.get(position).getPlaylistName());
-        Glide.with(mContext).load(playlistsList.get(position).getImageURL()).into(holder.playlistImage);
+        int pos = position;
+        holder.playlistName.setText(playlistsList.get(pos).getPlaylistName());
+        Glide.with(mContext).load(playlistsList.get(pos).getImageURL()).into(holder.playlistImage);
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SpecificPlaylist.class);
+                intent.putExtra("playlistName", playlistsList.get(pos).getPlaylistName());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -49,10 +62,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView playlistName;
         public ImageView playlistImage;
+        public LinearLayout parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             playlistName = (TextView) itemView.findViewById(R.id.playListName);
             playlistImage = (ImageView) itemView.findViewById(R.id.playListImage);
+            parentLayout = (LinearLayout) itemView.findViewById(R.id.parentLayout);
         }
     }
 }

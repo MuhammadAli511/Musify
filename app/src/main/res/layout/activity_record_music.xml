@@ -44,13 +44,26 @@
         android:background="@color/black"
         android:alpha="0"
         android:id="@+id/record_seek_bar"/>
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:id="@+id/recordTime"
-        android:textColor="@color/yellow"
-        android:textSize="18dp"/>
+        android:layout_marginLeft="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:id="@+id/recordTime"
+            android:textColor="@color/yellow"
+            android:textSize="18dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
+            android:textSize="18dp"
+            android:id="@+id/total_time"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

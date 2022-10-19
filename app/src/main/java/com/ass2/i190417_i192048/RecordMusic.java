@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class RecordMusic extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class RecordMusic extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     boolean isRecording;
     SeekBar seekBar;
-    TextView time;
+    TextView time,totalTime;
 
 
     @SuppressLint("MissingInflatedId")
@@ -49,6 +50,7 @@ public class RecordMusic extends AppCompatActivity {
         listen_audio = findViewById(R.id.start_stop);
         seekBar = findViewById(R.id.record_seek_bar);
         time = findViewById(R.id.recordTime);
+        totalTime= findViewById(R.id.total_time);
         // grant microphone access from user
         if(isMicrophonePresent())
             getMicrophonePermission();
@@ -68,6 +70,7 @@ public class RecordMusic extends AppCompatActivity {
             }
         });
         mediaPlayer = new MediaPlayer();
+
         listen_audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,13 +214,15 @@ public class RecordMusic extends AppCompatActivity {
 
                     int current_pos = mediaPlayer.getCurrentPosition()/1000;
                     int time_formatted = mediaPlayer.getCurrentPosition()/1000;
-
+                    if(time_formatted<60)
+                        totalTime.setText("/" + mediaPlayer.getDuration()/1000+"s");
+                    else
+                        totalTime.setText("/" + mediaPlayer.getDuration()/1000/60+"m" + mediaPlayer.getCurrentPosition()/1000%60+"s");
                     if(time_formatted<60){
                         time.setText(Integer.toString(mediaPlayer.getCurrentPosition()/1000)+"s");
                     }
                     else
                         time.setText(Integer.toString(mediaPlayer.getCurrentPosition()/1000/60)+"m" + (Integer.toString(mediaPlayer.getCurrentPosition()/1000%60)+"s") );
-
                     seekBar.setProgress(current_pos);
 
                 }
@@ -244,6 +249,5 @@ public class RecordMusic extends AppCompatActivity {
             }
         });
     }
-
 
 }

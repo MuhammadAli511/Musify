@@ -226,6 +226,7 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:src="@drawable/profiletwo"
+                android:id="@+id/profileImage"
                 android:layout_gravity="center">
             </ImageView>
 
@@ -236,33 +237,9 @@
                 android:textColor="@color/yellow"
                 android:textAlignment="center"
                 android:textSize="17dp"
+                android:id="@+id/userName"
                 android:textStyle="bold">
 
-            </TextView>
-
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:textColor="@color/yellow"
-                android:textAlignment="center"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp">
-
-            </TextView>
-
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change Password"
-                android:textColor="@color/yellow"
-                android:textAlignment="center"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp">
             </TextView>
 
             <View
@@ -277,6 +254,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
+                android:id="@+id/logout"
                 android:layout_marginBottom="40dp">
 
                 <TextView

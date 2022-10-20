@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
-    LinearLayout liked, add, search, listenlater;
+    LinearLayout liked, add, search, listenlater, logout;
     RecyclerView playlistRecyclerViewMain;
     FirebaseFirestore db;
     List<Playlists> playlistsList;
@@ -44,6 +44,7 @@ public class MainScreen extends AppCompatActivity {
         add = findViewById(R.id.add);
         search = findViewById(R.id.search);
         listenlater = findViewById(R.id.listenlater);
+        logout = findViewById(R.id.logout);
         db = FirebaseFirestore.getInstance();
 
         playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
@@ -62,6 +63,13 @@ public class MainScreen extends AppCompatActivity {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         musicRecyclerViewMain.setLayoutManager(layoutManager2);
         getData2();
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainScreen.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         add.setOnClickListener(new View.OnClickListener() {

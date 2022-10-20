@@ -2,18 +2,24 @@ package com.ass2.i190417_i192048;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
-    LinearLayout liked, add, search, listenlater, logout;
+    LinearLayout liked, add, search, listenlater;
     RecyclerView playlistRecyclerViewMain;
     FirebaseFirestore db;
     List<Playlists> playlistsList;
@@ -32,6 +38,13 @@ public class MainScreen extends AppCompatActivity {
     RecyclerView musicRecyclerViewMain;
     List<Music> musicList;
     MusicAdapter musicAdapter;
+
+    ImageView profileDrawerLoader, profileImage;
+    TextView userName;
+    LinearLayout logout, brownDrawer;
+    DrawerLayout profileDrawer;
+    TextView forgotPassword;
+    FirebaseUser user;
 
 
     @Override
@@ -45,13 +58,53 @@ public class MainScreen extends AppCompatActivity {
         search = findViewById(R.id.search);
         listenlater = findViewById(R.id.listenlater);
         logout = findViewById(R.id.logout);
+        brownDrawer = findViewById(R.id.brownDrawer);
+        profileDrawerLoader = findViewById(R.id.profileDrawerLoader);
+        profileDrawer = findViewById(R.id.profileDrawer);
+        profileImage = findViewById(R.id.profileImage);
+        userName = findViewById(R.id.userName);
+        forgotPassword = findViewById(R.id.forgotPassword);
         db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
         playlistsList = new ArrayList<>();
 
         musicRecyclerViewMain = findViewById(R.id.musicRecyclerViewMain);
         musicList = new ArrayList<>();
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreen.this, ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
+
+        brownDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Test", "Working");
+            }
+        });
+
+        profileDrawerLoader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (profileDrawer.isDrawerOpen(brownDrawer)) {
+                    profileDrawer.closeDrawer(brownDrawer);
+                } else {
+                    profileDrawer.openDrawer(brownDrawer);
+                }
+            }
+        });
+
+        if (user != null) {
+            userName.setText(user.getDisplayName());
+            profileImage.setImageURI(user.getPhotoUrl());
+        }
+
+
 
 
         // Layouts
@@ -67,7 +120,9 @@ public class MainScreen extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainScreen.this, "", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainScreen.this, Signin.class);
+                startActivity(intent);
             }
         });
 

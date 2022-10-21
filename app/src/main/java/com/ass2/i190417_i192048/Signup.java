@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ass2.i190417_i192048.Models.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +42,7 @@ public class Signup extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
     Uri imageURI;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class Signup extends AppCompatActivity {
         terms = findViewById(R.id.checkbox);
         signin = findViewById(R.id.signin);
         profilePic = findViewById(R.id.profilePic);
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
@@ -98,13 +101,17 @@ public class Signup extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri downloadURL) {
                                         String imageURL = downloadURL.toString();
-                                        mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                                        String emailStr = email.getText().toString();
+                                        String passwordStr = password.getText().toString();
+                                        String nameStr = name.getText().toString();
+                                        mAuth.createUserWithEmailAndPassword(emailStr, passwordStr)
                                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                                     @Override
                                                     public void onSuccess(AuthResult authResult) {
+                                                        String id = mAuth.getCurrentUser().getUid();
                                                         FirebaseUser user = mAuth.getCurrentUser();
                                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                                .setDisplayName(name.getText().toString())
+                                                                .setDisplayName(nameStr)
                                                                 .setPhotoUri(Uri.parse(imageURL))
                                                                 .build();
                                                         user.updateProfile(profileUpdates)
@@ -113,12 +120,15 @@ public class Signup extends AppCompatActivity {
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
                                                                             Toast.makeText(Signup.this, "User created successfully", Toast.LENGTH_LONG).show();
+                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender);
+                                                                            db.collection("Users").document(id).set(user);
                                                                             Intent intent = new Intent(Signup.this, Signin.class);
                                                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                             startActivity(intent);
                                                                         }
                                                                     }
                                                                 });
+
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
@@ -138,11 +148,6 @@ public class Signup extends AppCompatActivity {
                         });
 
                     }
-
-
-
-
-
 
 
                 }

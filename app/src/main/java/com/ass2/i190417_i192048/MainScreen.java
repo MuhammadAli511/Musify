@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ass2.i190417_i192048.Models.Music;
+import com.ass2.i190417_i192048.Models.Playlists;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,7 +104,11 @@ public class MainScreen extends AppCompatActivity {
 
         if (user != null) {
             userName.setText(user.getDisplayName());
-            profileImage.setImageURI(user.getPhotoUrl());
+            // set profile image using glide
+            Uri photoUrl = user.getPhotoUrl();
+            if (photoUrl != null) {
+                Glide.with(this).load(photoUrl).into(profileImage);
+            }
         }
 
 

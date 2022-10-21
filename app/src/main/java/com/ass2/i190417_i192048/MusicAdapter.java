@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ass2.i190417_i192048.Models.Music;
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;

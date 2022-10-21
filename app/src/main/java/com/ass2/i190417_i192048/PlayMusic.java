@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 // glide
+import com.ass2.i190417_i192048.Models.Music;
 import com.bumptech.glide.Glide;
 
 

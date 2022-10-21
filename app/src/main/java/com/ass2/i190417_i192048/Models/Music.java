@@ -1,4 +1,4 @@
-package com.ass2.i190417_i192048;
+package com.ass2.i190417_i192048.Models;
 
 import java.io.Serializable;
 

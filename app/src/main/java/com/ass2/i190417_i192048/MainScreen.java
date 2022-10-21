@@ -149,8 +149,10 @@ public class MainScreen extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Playlists playlists = new Playlists(document.getString("playlistName"), document.getString("imageURL"));
-                        playlistsList.add(playlists);
+                        Playlists playlists = new Playlists(document.getString("playlistName"), document.getString("imageURL"), document.getString("userID"));
+                        if (playlists.getUserID().equals(user.getUid())) {
+                            playlistsList.add(playlists);
+                        }
                     }
                     playlistAdapter = new PlaylistAdapter(MainScreen.this, playlistsList);
                     playlistRecyclerViewMain.setAdapter(playlistAdapter);

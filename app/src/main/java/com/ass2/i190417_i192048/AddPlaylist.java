@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ass2.i190417_i192048.Models.Playlists;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,6 +30,7 @@ public class AddPlaylist extends AppCompatActivity {
     FirebaseFirestore db;
     StorageReference storageRef;
     Uri imageURI;
+    FirebaseAuth mAuth;
     ProgressDialog progressDialog;
 
     @Override
@@ -43,6 +45,7 @@ public class AddPlaylist extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         progressDialog = new ProgressDialog(this);
+        mAuth = FirebaseAuth.getInstance();
         progressDialog.setMessage("Creating Playlist...");
 
         Intent oldIntent = getIntent();
@@ -75,7 +78,9 @@ public class AddPlaylist extends AppCompatActivity {
                                 public void onSuccess(Uri downloadURL) {
                                     String imageUrl = downloadURL.toString();
                                     String playlistName = playListNameEditor.getText().toString();
-                                    Playlists playlist = new Playlists(playlistName, imageUrl);
+                                    // get logged in user id
+                                    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    Playlists playlist = new Playlists(playlistName, imageUrl, userID);
                                     db.collection("playlists").document(playlistName).set(playlist);
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(AddPlaylist.this, SelectPlaylist.class);

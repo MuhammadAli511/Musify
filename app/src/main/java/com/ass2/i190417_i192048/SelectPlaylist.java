@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.ass2.i190417_i192048.Models.Playlists;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,6 +36,7 @@ public class SelectPlaylist extends AppCompatActivity {
     TextView skip;
     PlaylistAdapter2 playlistAdapter;
     FirebaseFirestore db;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class SelectPlaylist extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         playlistsList = new ArrayList<>();
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         selectPlaylistRecyclerView.setLayoutManager(layoutManager);
         getData();
@@ -80,7 +84,10 @@ public class SelectPlaylist extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Playlists playlists = new Playlists(document.getString("playlistName"), document.getString("imageURL"));
+                        Playlists playlists = new Playlists(document.getString("playlistName"), document.getString("imageURL"), document.getString("userID"));
+                        if (playlists.getUserID().equals(user.getUid())) {
+                            playlistsList.add(playlists);
+                        }
                         playlistsList.add(playlists);
                     }
                     playlistAdapter = new PlaylistAdapter2(SelectPlaylist.this, playlistsList);

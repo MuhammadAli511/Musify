@@ -7,8 +7,27 @@
     android:background="@color/black"
     tools:context=".MainScreen">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:id="@+id/ab"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/profileDrawerLoader"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/profile">
+
+        </ImageView>
+    </RelativeLayout>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
+        android:id="@+id/profileDrawer"
+        android:layout_below="@+id/ab"
         android:layout_height="match_parent">
 
         <RelativeLayout
@@ -19,27 +38,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:paddingTop="10dp">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentStart="true"
-                        android:src="@drawable/threelines">
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/profile">
-
-                    </ImageView>
-                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -219,13 +217,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:id="@+id/brownDrawer"
             android:background="@color/brown"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:src="@drawable/profiletwo"
+                android:id="@+id/profileImage"
                 android:layout_gravity="center">
             </ImageView>
 
@@ -236,33 +235,9 @@
                 android:textColor="@color/yellow"
                 android:textAlignment="center"
                 android:textSize="17dp"
+                android:id="@+id/userName"
                 android:textStyle="bold">
 
-            </TextView>
-
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:textColor="@color/yellow"
-                android:textAlignment="center"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp">
-
-            </TextView>
-
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change Password"
-                android:textColor="@color/yellow"
-                android:textAlignment="center"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp">
             </TextView>
 
             <View
@@ -272,11 +247,26 @@
 
             </View>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password ?"
+                android:id="@+id/forgotPassword"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:textSize="18dp"
+                android:textColor="@color/yellow">
+
+            </TextView>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
+                android:id="@+id/logout"
                 android:layout_marginBottom="40dp">
 
                 <TextView

@@ -3,6 +3,7 @@ package com.ass2.i190417_i192048;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class Signup extends AppCompatActivity {
     StorageReference storageRef;
     Uri imageURI;
     FirebaseFirestore db;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,9 @@ public class Signup extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Creating Account");
+        progressDialog.setMessage("Please wait while we create your account");
 
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +84,7 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(Signup.this, "Please accept terms and conditions", Toast.LENGTH_LONG).show();
                 }
                 else{
+                    progressDialog.show();
                     StorageReference imageRef = storageRef.child("images/" + email.getText().toString());
                     UploadTask uploadTask = imageRef.putFile(imageURI);
                     int selectedId = genderRadioGroup.getCheckedRadioButtonId();
@@ -96,7 +102,6 @@ public class Signup extends AppCompatActivity {
                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(Signup.this, "Image uploaded successfully", Toast.LENGTH_LONG).show();
                                 imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri downloadURL) {
@@ -119,9 +124,9 @@ public class Signup extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            Toast.makeText(Signup.this, "User created successfully", Toast.LENGTH_LONG).show();
                                                                             Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender);
                                                                             db.collection("Users").document(id).set(user);
+                                                                            progressDialog.dismiss();
                                                                             Intent intent = new Intent(Signup.this, Signin.class);
                                                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                             startActivity(intent);

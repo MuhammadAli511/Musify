@@ -3,6 +3,7 @@ package com.ass2.i190417_i192048;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class Signin extends AppCompatActivity {
     Button signin;
     TextView signup;
     FirebaseAuth mAuth;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -31,6 +33,9 @@ public class Signin extends AppCompatActivity {
         password = findViewById(R.id.password);
         signup = findViewById(R.id.signup);
         signin = findViewById(R.id.signin);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Signing In");
+        progressDialog.setMessage("Please wait while we are signing you in");
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -41,11 +46,12 @@ public class Signin extends AppCompatActivity {
                     Toast.makeText(Signin.this, "Please fill all the fields", Toast.LENGTH_LONG).show();
                 }
                 else{
-
+                    progressDialog.show();
                     mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
+                                    progressDialog.dismiss();
                                     startActivity(new Intent(Signin.this, MainScreen.class));
                                 }
                             })

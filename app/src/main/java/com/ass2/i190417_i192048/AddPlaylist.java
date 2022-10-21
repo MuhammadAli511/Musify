@@ -3,6 +3,7 @@ package com.ass2.i190417_i192048;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class AddPlaylist extends AppCompatActivity {
     FirebaseFirestore db;
     StorageReference storageRef;
     Uri imageURI;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class AddPlaylist extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Creating Playlist...");
 
         Intent oldIntent = getIntent();
         String title = oldIntent.getStringExtra("title");
@@ -60,6 +64,7 @@ public class AddPlaylist extends AppCompatActivity {
                 if (playListNameEditor.getText().toString().isEmpty() || imageURI == null) {
                     playListNameEditor.setError("Playlist name is required");
                 } else {
+                    progressDialog.show();
                     StorageReference imageRef = storageRef.child("images/" + playListNameEditor.getText().toString());
                     UploadTask uploadTask = imageRef.putFile(imageURI);
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -72,6 +77,7 @@ public class AddPlaylist extends AppCompatActivity {
                                     String playlistName = playListNameEditor.getText().toString();
                                     Playlists playlist = new Playlists(playlistName, imageUrl);
                                     db.collection("playlists").document(playlistName).set(playlist);
+                                    progressDialog.dismiss();
                                     Intent intent = new Intent(AddPlaylist.this, SelectPlaylist.class);
                                     intent.putExtra("title", title);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

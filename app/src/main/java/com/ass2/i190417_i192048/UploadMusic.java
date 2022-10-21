@@ -3,6 +3,7 @@ package com.ass2.i190417_i192048;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class UploadMusic extends AppCompatActivity {
     StorageReference storageRef;
     Uri musicURI;
     Uri imageURI;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -51,6 +53,8 @@ public class UploadMusic extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading Music...");
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +92,7 @@ public class UploadMusic extends AppCompatActivity {
                 if (title.getText().toString().isEmpty() || genre.getText().toString().isEmpty() || description.getText().toString().isEmpty() || imageURI == null || musicURI == null) {
                     Toast.makeText(UploadMusic.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else {
+                    progressDialog.show();
                     StorageReference audioRef = storageRef.child("audio/" + title.getText().toString());
                     UploadTask uploadTask = audioRef.putFile(musicURI);
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -110,7 +115,7 @@ public class UploadMusic extends AppCompatActivity {
                                                     db.collection("Music").document(title.getText().toString()).set(music).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Toast.makeText(UploadMusic.this, "Music Uploaded", Toast.LENGTH_SHORT).show();
+                                                            progressDialog.dismiss();
                                                             Intent intent = new Intent(UploadMusic.this, SelectPlaylist.class);
                                                             intent.putExtra("title", title.getText().toString());
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

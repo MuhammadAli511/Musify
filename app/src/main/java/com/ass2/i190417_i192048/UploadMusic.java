@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,6 +33,7 @@ public class UploadMusic extends AppCompatActivity {
     StorageReference storageRef;
     Uri musicURI;
     Uri imageURI;
+    MaterialButton recordScreen;
 
 
     @Override
@@ -50,6 +52,14 @@ public class UploadMusic extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        recordScreen = findViewById(R.id.record);
+
+        recordScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UploadMusic.this,RecordMusic.class));
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

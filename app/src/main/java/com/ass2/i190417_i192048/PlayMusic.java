@@ -30,7 +30,7 @@ public class PlayMusic extends AppCompatActivity {
     List<Music> musicList;
     Music currentSong;
     MediaPlayer mediaPlayer = MusicMediaPlayer.getInstance();
-    TextView changeScreen;
+    ImageView toChatScreen;
 
 
     @SuppressLint("MissingInflatedId")
@@ -52,12 +52,12 @@ public class PlayMusic extends AppCompatActivity {
         pauseButton = findViewById(R.id.pauseButton);
         nextButton = findViewById(R.id.nextButton);
         comment = findViewById(R.id.comment);
-        changeScreen = findViewById(R.id.record_screen);
+        toChatScreen = findViewById(R.id.communication);
 
-        changeScreen.setOnClickListener(new View.OnClickListener() {
+        toChatScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PlayMusic.this,RecordMusic.class));
+                startActivity(new Intent(PlayMusic.this,MainChatScreen.class));
             }
         });
 

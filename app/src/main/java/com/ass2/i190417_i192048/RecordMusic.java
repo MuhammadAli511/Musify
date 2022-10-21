@@ -55,6 +55,8 @@ public class RecordMusic extends AppCompatActivity {
         if(isMicrophonePresent())
             getMicrophonePermission();
 
+
+
         recordMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +76,7 @@ public class RecordMusic extends AppCompatActivity {
         listen_audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 changeSeekBarColor();
                 playAudio(getRecordingFilePath());
             }
@@ -181,6 +184,7 @@ public class RecordMusic extends AppCompatActivity {
         else if (mediaPlayer.isPlaying()){
             try{
                 pauseListen();
+                //time.setText(convertToMMSS(String.valueOf(mediaPlayer.getCurrentPosition())));
                 //mediaPlayer.pause();
                 mediaPlayer.reset();
                 mediaPlayer.prepare();
@@ -197,7 +201,7 @@ public class RecordMusic extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void changeSeekBarColor(){
-        seekBar.setBackgroundColor(R.id.back);
+        //seekBar.setBackgroundColor(R.color.black);
         seekBar.setAlpha(1.0F);
         //seekBar.setThumbTintMode(R.color.yellow);
     }
@@ -211,18 +215,9 @@ public class RecordMusic extends AppCompatActivity {
             @Override
             public void run() {
                 if(mediaPlayer!=null){
-
                     int current_pos = mediaPlayer.getCurrentPosition()/1000;
-                    int time_formatted = mediaPlayer.getCurrentPosition()/1000;
-                    if(time_formatted<60)
-                        totalTime.setText("/" + mediaPlayer.getDuration()/1000+"s");
-                    else
-                        totalTime.setText("/" + mediaPlayer.getDuration()/1000/60+"m" + mediaPlayer.getCurrentPosition()/1000%60+"s");
-                    if(time_formatted<60){
-                        time.setText(Integer.toString(mediaPlayer.getCurrentPosition()/1000)+"s");
-                    }
-                    else
-                        time.setText(Integer.toString(mediaPlayer.getCurrentPosition()/1000/60)+"m" + (Integer.toString(mediaPlayer.getCurrentPosition()/1000%60)+"s") );
+                    time.setText(convertToMMSS(String.valueOf(mediaPlayer.getCurrentPosition())));
+                    totalTime.setText(convertToMMSS(String.valueOf(mediaPlayer.getDuration())));
                     seekBar.setProgress(current_pos);
 
                 }
@@ -234,7 +229,7 @@ public class RecordMusic extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if(mediaPlayer != null && b){
-                    mediaPlayer.seekTo(i*1000);
+                    mediaPlayer.seekTo(i*1000); //i*1000
                 }
             }
 
@@ -248,6 +243,15 @@ public class RecordMusic extends AppCompatActivity {
 
             }
         });
+    }
+
+    public static String convertToMMSS(String duration){
+        Long millis = Long.parseLong(duration);
+        @SuppressLint("DefaultLocale") String returnValue = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+        return returnValue;
+
     }
 
 }

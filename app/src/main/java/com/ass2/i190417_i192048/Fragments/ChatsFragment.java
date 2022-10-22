@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,16 +44,38 @@ public class ChatsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
-        db.collection("Users").addSnapshotListener((value, error) -> {
-            list.clear();
-            for (int i = 0; i < value.size(); i++) {
-                if (!value.getDocuments().get(i).getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    // only add values which are user's contacts
-                    list.add(value.getDocuments().get(i).toObject(Users.class));
+        String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        List<String> contactsList = new ArrayList<>();
+        db.collection("Users").document(currentUserID).collection("Contacts").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (int i = 0; i < task.getResult().size(); i++) {
+                    String contactID = task.getResult().getDocuments().get(i).getId();
+                    contactsList.add(contactID);
+                }
+                if (contactsList.size()!=0)
+                {
+                    Log.d("Hello1", "Hello1");
+                    db.collection("Users").whereIn("userId", contactsList).get().addOnCompleteListener(task2 -> {
+                        if (task2.isSuccessful()) {
+                            Log.d("Hello2", "Hello2 " + task2.getResult().size());
+                            for (int i = 0; i < task2.getResult().size(); i++) {
+                                Log.d("Hello3", "Hello3");
+                                list.add(task2.getResult().getDocuments().get(i).toObject(Users.class));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
             }
-            adapter.notifyDataSetChanged();
         });
+        // get all users with given ids
+
+
+
+
+
+
+
 
         return view;
     }

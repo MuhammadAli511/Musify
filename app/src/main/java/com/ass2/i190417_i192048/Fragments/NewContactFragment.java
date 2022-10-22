@@ -66,7 +66,7 @@ public class NewContactFragment extends Fragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Map<String, String> map2 = new HashMap<>();
-                                            map.put("ContactID", currentUser);
+                                            map2.put("ContactID", currentUser);
                                             db.collection("Users").document(newContact).collection("Contacts").document(currentUser).set(map2).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {

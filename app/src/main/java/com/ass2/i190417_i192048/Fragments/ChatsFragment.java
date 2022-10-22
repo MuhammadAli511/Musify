@@ -47,6 +47,7 @@ public class ChatsFragment extends Fragment {
             list.clear();
             for (int i = 0; i < value.size(); i++) {
                 if (!value.getDocuments().get(i).getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    // only add values which are user's contacts
                     list.add(value.getDocuments().get(i).toObject(Users.class));
                 }
             }

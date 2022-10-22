@@ -1,5 +1,8 @@
 package com.ass2.i190417_i192048.Models;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Users {
     String name;
     String email;
@@ -9,6 +12,7 @@ public class Users {
     String userId;
     String latestMessage;
     String phoneNum;
+    HashMap<String,String> Contacts;
 
     public Users(){}
 
@@ -31,6 +35,14 @@ public class Users {
         this.gender = gender;
         this.userId = userId;
         this.latestMessage = latestMessage;
+    }
+
+    public HashMap<String, String> getContacts() {
+        return Contacts;
+    }
+
+    public void setContacts(HashMap<String, String> contacts) {
+        Contacts = contacts;
     }
 
     public String getPhoneNum() {

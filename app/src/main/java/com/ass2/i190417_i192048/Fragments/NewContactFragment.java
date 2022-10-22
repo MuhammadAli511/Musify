@@ -46,51 +46,55 @@ public class NewContactFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         phoneNum = view.findViewById(R.id.phoneNumOne);
         addContact = view.findViewById(R.id.addContact);
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid(); // person adding id
         db = FirebaseFirestore.getInstance();
 
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get receiver user
-                String phoneNumStr = phoneNum.getText().toString();
-                Map<String, Object> nestedData = new HashMap<>();
-                nestedData.put("phoneNum", phoneNumStr);
-                db.collection("Users").whereEqualTo("phoneNum", phoneNumStr).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (task.getResult().size() > 0) {
-                            String receiverUser = task.getResult().getDocuments().get(0).getId();
-                            // Add to contacts
-                            //db.collection("Users").document(currentUser).collection("Contacts").document(receiverUser).set(nestedData);
-                            db.collection("Users").document(currentUser).update("Contacts", nestedData);
-                            // get users phone number with given id
-                            db.collection("Users").document(currentUser).get().addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    DocumentSnapshot document = task1.getResult();
-                                    if (document.exists()) {
-                                        String receiverPhoneNum = document.getString("phoneNum");
-                                        Map<String, Object> nestedData1 = new HashMap<>();
-                                        nestedData1.put("phoneNum", receiverPhoneNum);
-                                        // Add to contacts
-                                        //db.collection("Users").document(receiverUser).collection("Contacts").document(currentUser).set(nestedData);
-                                        db.collection("Users").document(receiverUser).update("Contacts", nestedData1);
-                                        Toast.makeText(getContext(), "Contact added successfully", Toast.LENGTH_SHORT).show();
-                                        phoneNum.setText("");
-                                    } else {
-                                        Toast.makeText(getContext(), "No such document", Toast.LENGTH_SHORT).show();
+                String phoneNumStr = phoneNum.getText().toString(); // person to be added
+                db.collection("Users").whereEqualTo("phoneNum", phoneNumStr).get().addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() > 0) {
+                                String newContact = task.getResult().getDocuments().get(0).getId(); // person to be added ID
+                                Map<String, String> map = new HashMap<>();
+                                map.put("ContactID", newContact);
+                                db.collection("Users").document(currentUser).collection("Contacts").document(newContact).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Map<String, String> map2 = new HashMap<>();
+                                            map.put("ContactID", currentUser);
+                                            db.collection("Users").document(newContact).collection("Contacts").document(currentUser).set(map2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        phoneNum.setText("");
+                                                        Toast.makeText(getContext(), "Contact Added", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                } else {
-                                    Toast.makeText(getContext(), "Failed to get document", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+                                });
+
+
+                            } else {
+                                Toast.makeText(getContext(), "No user found with this phone number", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
 
 
-                //db.collection("Contacts").document(currentUser).collection("Contacts").document(phoneNumStr).set(phoneNumStr);
+
+
             }
         });
     }

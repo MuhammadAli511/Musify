@@ -50,7 +50,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         } else if (position == 2) {
             title = "New";
         } else if (position == 3) {
-            title = "Friends";
+            title = "Contacts";
         } else if (position == 4) {
             title = "Setting";
         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainScreen">
+    tools:context=".MusicApp.MainScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,8 +18,16 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/profileDrawerLoader"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/profile">
+
+        </ImageView>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/chatIcon"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/chaticon">
 
         </ImageView>
     </RelativeLayout>

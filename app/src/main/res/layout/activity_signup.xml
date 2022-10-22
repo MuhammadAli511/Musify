@@ -30,25 +30,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Musify"
-            android:textColor="@color/white"
-            android:textSize="35dp"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold">
-
-        </TextView>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,6 +116,27 @@
             android:hint="Password"
             android:textColor="@color/black"
             android:inputType="textPassword"
+            android:textColorHint="#D4B300">
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <EditText
+            android:id="@+id/phoneNum"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:background="@drawable/roundedrectangle"
+            android:hint="Phone Number"
+            android:textColor="@color/black"
+            android:inputType="phone"
             android:textColorHint="#D4B300">
         </EditText>
 

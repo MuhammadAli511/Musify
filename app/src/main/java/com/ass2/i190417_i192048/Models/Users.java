@@ -8,16 +8,18 @@ public class Users {
     String gender;
     String userId;
     String latestMessage;
+    String phoneNum;
 
     public Users(){}
 
-    public Users(String name, String email, String password, String profileURL, String gender)
+    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum)
     {
         this.name = name;
         this.email = email;
         this.password = password;
         this.profileURL = profileURL;
         this.gender = gender;
+        this.phoneNum = phoneNum;
     }
 
 
@@ -29,6 +31,14 @@ public class Users {
         this.gender = gender;
         this.userId = userId;
         this.latestMessage = latestMessage;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     public String getName() {

@@ -55,4 +55,10 @@ public class ChatsFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
 }

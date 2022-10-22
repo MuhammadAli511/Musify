@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -34,7 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 public class Signup extends AppCompatActivity {
     ImageView profilePic;
-    EditText name, email, password;
+    EditText name, email, password, phoneNum;
     RadioGroup genderRadioGroup;
     RadioButton genderRadioButton;
     Button signup;
@@ -55,6 +56,7 @@ public class Signup extends AppCompatActivity {
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        phoneNum = findViewById(R.id.phoneNum);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
         signup = findViewById(R.id.signup);
         terms = findViewById(R.id.checkbox);
@@ -91,7 +93,7 @@ public class Signup extends AppCompatActivity {
                     int selectedId = genderRadioGroup.getCheckedRadioButtonId();
                     genderRadioButton = findViewById(selectedId);
                     String gender = genderRadioButton.getText().toString();
-                    if (name.getText().toString().equals("") || email.getText().toString().equals("") || password.getText().toString().equals("")){
+                    if (name.getText().toString().equals("") || email.getText().toString().equals("") || password.getText().toString().equals("") || phoneNum.getText().toString().equals("")){
                         Toast.makeText(Signup.this, "Please fill all the fields", Toast.LENGTH_LONG).show();
                     }
                     else{
@@ -110,6 +112,7 @@ public class Signup extends AppCompatActivity {
                                         String emailStr = email.getText().toString();
                                         String passwordStr = password.getText().toString();
                                         String nameStr = name.getText().toString();
+                                        String phoneNumStr = phoneNum.getText().toString();
                                         mAuth.createUserWithEmailAndPassword(emailStr, passwordStr)
                                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                                     @Override
@@ -125,7 +128,8 @@ public class Signup extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender);
+                                                                            Log.d("Phone Number", phoneNumStr + " Testing");
+                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr);
                                                                             user.setUserId(id);
                                                                             db.collection("Users").document(id).set(user);
                                                                             progressDialog.dismiss();

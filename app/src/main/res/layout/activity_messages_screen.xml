@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Online"
+                    android:alpha="0.7"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -115,8 +116,6 @@
                 android:src="@drawable/send_message"
                 android:layout_gravity="right|center_vertical"
                 android:layout_margin="10dp"/>
-
-
 
         </FrameLayout>
 

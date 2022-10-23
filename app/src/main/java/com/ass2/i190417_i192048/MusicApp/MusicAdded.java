@@ -25,7 +25,7 @@ public class MusicAdded extends AppCompatActivity {
         String title = oldIntent.getStringExtra("title");
         String playlistName = oldIntent.getStringExtra("playlistName");
         db = FirebaseFirestore.getInstance();
-        db.collection("Music").document(title).update("playlist", playlistName);
+        db.collection("Music").document(title).update("playlistName", playlistName);
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override

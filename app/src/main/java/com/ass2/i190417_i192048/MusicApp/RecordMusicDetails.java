@@ -24,11 +24,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class UploadMusic extends AppCompatActivity {
+import java.io.File;
+
+public class RecordMusicDetails extends AppCompatActivity {
     ImageView back, uploadImage;
-    Button  uploadMusic;
     EditText title, genre, description;
-    Button upload, record;
+    Button upload;
     FirebaseStorage storage;
     FirebaseFirestore db;
     StorageReference storageRef;
@@ -36,20 +37,20 @@ public class UploadMusic extends AppCompatActivity {
     Uri imageURI;
     ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_music);
+        setContentView(R.layout.activity_record_music_details);
+
+        Intent oldIntent = getIntent();
+        String filePath = oldIntent.getStringExtra("path");
 
         back = findViewById(R.id.back);
         uploadImage = findViewById(R.id.uploadImage);
-        uploadMusic = findViewById(R.id.uploadMusic);
         title = findViewById(R.id.title);
         genre = findViewById(R.id.genre);
         description = findViewById(R.id.description);
         upload = findViewById(R.id.upload);
-        record = findViewById(R.id.record);
         storageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -59,10 +60,10 @@ public class UploadMusic extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UploadMusic.this, MainScreen.class);
+                Intent intent = new Intent(RecordMusicDetails.this, MainScreen.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                UploadMusic.this.finish();
+                RecordMusicDetails.this.finish();
             }
         });
 
@@ -72,26 +73,17 @@ public class UploadMusic extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 100);
-            }
-        });
-
-        uploadMusic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("audio/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Music"), 101);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 102);
             }
         });
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (title.getText().toString().isEmpty() || genre.getText().toString().isEmpty() || description.getText().toString().isEmpty() || imageURI == null || musicURI == null) {
-                    Toast.makeText(UploadMusic.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                if (title.getText().toString().isEmpty() || genre.getText().toString().isEmpty() || description.getText().toString().isEmpty() || imageURI == null) {
+                    Toast.makeText(RecordMusicDetails.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else {
+                    musicURI = Uri.fromFile(new File(filePath));
                     progressDialog.show();
                     StorageReference audioRef = storageRef.child("audio/" + title.getText().toString());
                     UploadTask uploadTask = audioRef.putFile(musicURI);
@@ -100,11 +92,11 @@ public class UploadMusic extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             audioRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onSuccess(Uri downloadURL) {
-                                    String audioURL = downloadURL.toString();
+                                public void onSuccess(Uri uri) {
+                                    String audioURL = uri.toString();
                                     StorageReference imageRef = storageRef.child("images/" + title.getText().toString());
-                                    UploadTask uploadTask = imageRef.putFile(imageURI);
-                                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    UploadTask uploadTask1 = imageRef.putFile(imageURI);
+                                    uploadTask1.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                             imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -114,18 +106,18 @@ public class UploadMusic extends AppCompatActivity {
                                                     Music music = new Music(title.getText().toString(), genre.getText().toString(), description.getText().toString(), audioURL, imageURL, FirebaseAuth.getInstance().getCurrentUser().getUid());
                                                     db.collection("Music").document(title.getText().toString()).set(music).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
-                                                        public void onSuccess(Void aVoid) {
+                                                        public void onSuccess(Void unused) {
                                                             progressDialog.dismiss();
-                                                            Intent intent = new Intent(UploadMusic.this, SelectPlaylist.class);
+                                                            Intent intent = new Intent(RecordMusicDetails.this, SelectPlaylist.class);
                                                             intent.putExtra("title", title.getText().toString());
                                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             startActivity(intent);
-                                                            UploadMusic.this.finish();
+                                                            RecordMusicDetails.this.finish();
                                                         }
                                                     }).addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(UploadMusic.this, "Error", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(RecordMusicDetails.this, "Error", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
                                                 }
@@ -134,49 +126,31 @@ public class UploadMusic extends AppCompatActivity {
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(UploadMusic.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RecordMusicDetails.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-
                                 }
                             });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(UploadMusic.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RecordMusicDetails.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("UploadMusic", e.getMessage());
                         }
                     });
-
                 }
             }
         });
-
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UploadMusic.this, RecordMusic.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                UploadMusic.this.finish();
-            }
-        });
-
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK) {
+        if (requestCode == 102 && resultCode == RESULT_OK) {
             uploadImage.setImageURI(data.getData());
             imageURI = data.getData();
         }
-        if (requestCode == 101 && resultCode == RESULT_OK) {
-            musicURI = data.getData();
-        }
     }
-
-
 }

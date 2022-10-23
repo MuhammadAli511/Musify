@@ -67,7 +67,7 @@ public class SpecificPlaylist extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Music music = new Music(document.getString("title"), document.getString("genre"), document.getString("description"), document.getString("musicURL"), document.getString("imageURL"), document.getString("userID"));
-                        String playList2 = document.getString("playlist");
+                        String playList2 = document.getString("playlistName");
                         if (playlistNameString.equals(playList2)){
                             musicList.add(music);
                         }

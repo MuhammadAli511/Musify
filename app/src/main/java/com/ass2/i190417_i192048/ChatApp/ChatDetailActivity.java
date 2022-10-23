@@ -17,7 +17,9 @@ import com.ass2.i190417_i192048.Adapters.MessageAdapter;
 import com.ass2.i190417_i192048.Models.Messages;
 import com.ass2.i190417_i192048.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,8 +38,7 @@ import java.util.List;
 
 public class ChatDetailActivity extends AppCompatActivity {
 
-    FirebaseDatabase db;
-    FirebaseFirestore db1;
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
     ImageView backButton, userImage, sendMsg;
     TextView userName, status;
     EditText messageToSend;
@@ -60,8 +61,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         sendMsg = findViewById(R.id.sendMsg);
         messageToSend = findViewById(R.id.messageToSend);
         status = findViewById(R.id.status);
-        db = FirebaseDatabase.getInstance();
-        db1 = FirebaseFirestore.getInstance();
+
         mAuth = FirebaseAuth.getInstance();
         chatDetailRecyclerView = findViewById(R.id.chatDetailRecyclerView);
         messagesList = new ArrayList<>();
@@ -91,11 +91,29 @@ public class ChatDetailActivity extends AppCompatActivity {
         senderId1 = senderId;
         receiverId1 = receiverId;
 
-        db1.collection("Users").document(receiverId1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        // check for realtime updates on user status
+        db.getReference().child("UsersStatus").child(receiverId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String status1 = documentSnapshot.getString("status");
-                status.setText(status1);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String status1 = snapshot.getValue(String.class);
+                    status.setText(status1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        db.getReference().child("UsersStatus").child(receiverId1).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    String status1 = task.getResult().getValue(String.class);
+                    status.setText(status1);
+                }
             }
         });
 
@@ -164,11 +182,13 @@ public class ChatDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        db1.collection("Users").document(receiverId1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.getReference().child("UsersStatus").child(receiverId1).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String status1 = documentSnapshot.getString("status");
-                status.setText(status1);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    String status1 = task.getResult().getValue(String.class);
+                    status.setText(status1);
+                }
             }
         });
 

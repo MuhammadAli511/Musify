@@ -11,6 +11,7 @@ import com.ass2.i190417_i192048.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChatMainScreen extends AppCompatActivity {
@@ -42,8 +43,8 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Online");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Online");
     }
 
     @Override
@@ -54,8 +55,8 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Online");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Online");
     }
 
     @Override
@@ -66,8 +67,8 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Online");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Online");
     }
 
     @Override
@@ -78,8 +79,8 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Online");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Online");
     }
 
     @Override
@@ -90,8 +91,8 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Online");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Online");
     }
 
     @Override
@@ -102,7 +103,7 @@ public class ChatMainScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(id).update("status", "Offline");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id).setValue("Offline");
     }
 }

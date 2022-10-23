@@ -12,11 +12,10 @@ public class Users {
     String userId;
     String latestMessage;
     String phoneNum;
-    String status;
 
     public Users(){}
 
-    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum, String status)
+    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum)
     {
         this.name = name;
         this.email = email;
@@ -24,7 +23,6 @@ public class Users {
         this.profileURL = profileURL;
         this.gender = gender;
         this.phoneNum = phoneNum;
-        this.status = status;
     }
 
 
@@ -37,14 +35,6 @@ public class Users {
         this.userId = userId;
         this.latestMessage = latestMessage;
         this.phoneNum = phoneNum;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getPhoneNum() {

@@ -28,6 +28,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -128,10 +130,14 @@ public class Signup extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            String status = "Offline";
-                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr,status);
+                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr);
                                                                             user.setUserId(id);
                                                                             db.collection("Users").document(id).set(user);
+
+                                                                            String status = "Offline";
+                                                                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                                                                            reference.child("UsersStatus").child(id).setValue(status);
+
                                                                             progressDialog.dismiss();
                                                                             Intent intent = new Intent(Signup.this, Signin.class);
                                                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -125,6 +126,14 @@ public class MainScreen extends AppCompatActivity {
                 Glide.with(this).load(photoUrl).into(profileImage);
             }
         }
+
+        FirebaseAuth mAuth;
+        FirebaseUser currentUser;
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        String id1 = currentUser.getUid();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.getReference().child("UsersStatus").child(id1).setValue("Offline");
 
 
 

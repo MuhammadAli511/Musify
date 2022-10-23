@@ -128,8 +128,8 @@ public class Signup extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            Log.d("Phone Number", phoneNumStr + " Testing");
-                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr);
+                                                                            String status = "Offline";
+                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr,status);
                                                                             user.setUserId(id);
                                                                             db.collection("Users").document(id).set(user);
                                                                             progressDialog.dismiss();

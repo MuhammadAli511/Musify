@@ -12,11 +12,11 @@ public class Users {
     String userId;
     String latestMessage;
     String phoneNum;
-    HashMap<String,String> Contacts;
+    String status;
 
     public Users(){}
 
-    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum)
+    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum, String status)
     {
         this.name = name;
         this.email = email;
@@ -24,10 +24,11 @@ public class Users {
         this.profileURL = profileURL;
         this.gender = gender;
         this.phoneNum = phoneNum;
+        this.status = status;
     }
 
 
-    public Users(String name, String email, String password, String profileURL, String gender, String userId, String latestMessage) {
+    public Users(String name, String email, String password, String profileURL, String gender, String phoneNum, String userId, String latestMessage) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -35,14 +36,15 @@ public class Users {
         this.gender = gender;
         this.userId = userId;
         this.latestMessage = latestMessage;
+        this.phoneNum = phoneNum;
     }
 
-    public HashMap<String, String> getContacts() {
-        return Contacts;
+    public String getStatus() {
+        return status;
     }
 
-    public void setContacts(HashMap<String, String> contacts) {
-        Contacts = contacts;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPhoneNum() {

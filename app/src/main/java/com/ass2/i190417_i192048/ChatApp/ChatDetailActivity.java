@@ -1,6 +1,7 @@
 package com.ass2.i190417_i192048.ChatApp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,23 +23,30 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EventListener;
 import java.util.List;
 
 public class ChatDetailActivity extends AppCompatActivity {
 
     FirebaseDatabase db;
+    FirebaseFirestore db1;
     ImageView backButton, userImage, sendMsg;
-    TextView userName;
+    TextView userName, status;
     EditText messageToSend;
     FirebaseAuth mAuth;
     RecyclerView chatDetailRecyclerView;
     List<Messages> messagesList;
     MessageAdapter messageAdapter;
+    String senderId1;
+    String receiverId1;
 
 
     @Override
@@ -51,7 +59,9 @@ public class ChatDetailActivity extends AppCompatActivity {
         userName = findViewById(R.id.userName);
         sendMsg = findViewById(R.id.sendMsg);
         messageToSend = findViewById(R.id.messageToSend);
+        status = findViewById(R.id.status);
         db = FirebaseDatabase.getInstance();
+        db1 = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         chatDetailRecyclerView = findViewById(R.id.chatDetailRecyclerView);
         messagesList = new ArrayList<>();
@@ -78,6 +88,18 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         String senderRoom = senderId + receiverId;
         String receiverRoom = receiverId + senderId;
+        senderId1 = senderId;
+        receiverId1 = receiverId;
+
+        db1.collection("Users").document(receiverId1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String status1 = documentSnapshot.getString("status");
+                status.setText(status1);
+            }
+        });
+
+
 
         db.getReference().child("Chats").child(senderRoom).addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,6 +158,19 @@ public class ChatDetailActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db1.collection("Users").document(receiverId1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String status1 = documentSnapshot.getString("status");
+                status.setText(status1);
+            }
+        });
 
     }
 }

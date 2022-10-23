@@ -73,6 +73,8 @@ public class MainScreen extends AppCompatActivity {
         chatIcon = findViewById(R.id.chatIcon);
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        String id = user.getUid();
+        db.collection("Users").document(id).update("status", "Offline");
 
         playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
         playlistsList = new ArrayList<>();

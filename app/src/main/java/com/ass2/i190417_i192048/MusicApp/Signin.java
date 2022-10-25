@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.onesignal.OneSignal;
 
 public class Signin extends AppCompatActivity {
     EditText email, password;
@@ -24,6 +26,7 @@ public class Signin extends AppCompatActivity {
     TextView signup;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+    FirebaseFirestore db;
 
 
     @Override
@@ -39,6 +42,7 @@ public class Signin extends AppCompatActivity {
         progressDialog.setMessage("Please wait while we are signing you in");
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +57,24 @@ public class Signin extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
                                     progressDialog.dismiss();
-                                    startActivity(new Intent(Signin.this, MainScreen.class));
+                                    // update device id field in database
+                                    String deviceIDStr = OneSignal.getDeviceState().getUserId();
+                                    db.collection("Users").document(mAuth.getCurrentUser().getUid()).update("deviceID", deviceIDStr)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    startActivity(new Intent(Signin.this, MainScreen.class));
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(Signin.this, "Login Failed", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
+
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

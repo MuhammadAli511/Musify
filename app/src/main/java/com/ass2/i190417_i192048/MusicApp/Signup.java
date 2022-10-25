@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.onesignal.OneSignal;
 
 public class Signup extends AppCompatActivity {
     ImageView profilePic;
@@ -115,6 +116,7 @@ public class Signup extends AppCompatActivity {
                                         String passwordStr = password.getText().toString();
                                         String nameStr = name.getText().toString();
                                         String phoneNumStr = phoneNum.getText().toString();
+                                        String deviceIDStr = OneSignal.getDeviceState().getUserId();
                                         mAuth.createUserWithEmailAndPassword(emailStr, passwordStr)
                                                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                                     @Override
@@ -130,7 +132,7 @@ public class Signup extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr);
+                                                                            Users user = new Users(nameStr,emailStr,passwordStr,imageURL,gender,phoneNumStr,deviceIDStr);
                                                                             user.setUserId(id);
                                                                             db.collection("Users").document(id).set(user);
 

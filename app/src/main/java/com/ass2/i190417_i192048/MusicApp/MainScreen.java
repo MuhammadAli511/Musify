@@ -24,6 +24,8 @@ import com.ass2.i190417_i192048.Models.Playlists;
 import com.ass2.i190417_i192048.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +55,7 @@ public class MainScreen extends AppCompatActivity {
     DrawerLayout profileDrawer;
     TextView forgotPassword;
     FirebaseUser user;
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -75,6 +79,7 @@ public class MainScreen extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         String id = user.getUid();
+        mAuth = FirebaseAuth.getInstance();
         db.collection("Users").document(id).update("status", "Offline");
 
         playlistRecyclerViewMain = findViewById(R.id.playlistRecyclerViewMain);
@@ -82,6 +87,9 @@ public class MainScreen extends AppCompatActivity {
 
         musicRecyclerViewMain = findViewById(R.id.musicRecyclerViewMain);
         musicList = new ArrayList<>();
+
+        String deviceIDStr = OneSignal.getDeviceState().getUserId();
+        db.collection("Users").document(mAuth.getCurrentUser().getUid()).update("deviceID", deviceIDStr);
 
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override

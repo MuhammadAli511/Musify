@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +36,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.List;
+import com.onesignal.OneSignal;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ChatDetailActivity extends AppCompatActivity {
 
@@ -158,6 +163,8 @@ public class ChatDetailActivity extends AppCompatActivity {
                 String dateText = formatter.format(cal.getTime());
                 messages.setTimestamp(dateText);
                 messageToSend.setText("");
+                // get a field from the user document
+
 
                 db.getReference().child("Chats").child(senderRoom).push().setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -165,6 +172,29 @@ public class ChatDetailActivity extends AppCompatActivity {
                         db.getReference().child("Chats").child(receiverRoom).push().setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                FirebaseFirestore.getInstance().collection("Users").document(receiverId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        String token = documentSnapshot.getString("deviceID");
+                                        try {
+                                            OneSignal.postNotification(new JSONObject("{'contents': {'en':'"+message+"'}, 'include_player_ids': ['" + token + "']}"),
+                                                    new OneSignal.PostNotificationResponseHandler() {
+                                                        @Override
+                                                        public void onSuccess(JSONObject response) {
+                                                            Log.d("OneSignalExample", "postNotification Success: " + response.toString());
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(JSONObject response) {
+                                                            Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
+                                                        }
+                                                    });
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
 
                             }
                         });

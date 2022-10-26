@@ -77,8 +77,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         chatDetailRecyclerView.setLayoutManager(layoutManager);
 
 
-
-
         final String senderId = mAuth.getCurrentUser().getUid();
         String receiverId = getIntent().getStringExtra("userID");
         String receiverName = getIntent().getStringExtra("userName");
@@ -154,11 +152,6 @@ public class ChatDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
 
 
 

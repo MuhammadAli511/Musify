@@ -69,7 +69,7 @@ public class SelectPlaylist extends AppCompatActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectPlaylist.this, MainActivity.class);
+                Intent intent = new Intent(SelectPlaylist.this, MainScreen.class);
                 startActivity(intent);
             }
         });

@@ -14,6 +14,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ChatMainScreen extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -104,6 +108,12 @@ public class ChatMainScreen extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         String id = currentUser.getUid();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        db.getReference().child("UsersStatus").child(id).setValue("Offline");
+
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy HH:mm");
+        String dateText = formatter.format(cal.getTime());
+        String finalText = "Last Seen: " + dateText;
+        db.getReference().child("UsersStatus").child(id).setValue(finalText);
     }
 }

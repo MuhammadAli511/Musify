@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
+import com.ass2.i190417_i192048.ChatApp.ChatDetailActivity;
 import com.ass2.i190417_i192048.ChatApp.ChatMainScreen;
 import com.ass2.i190417_i192048.Models.Music;
 import com.onesignal.OSNotificationAction;
@@ -45,26 +46,22 @@ public class MyApplication extends Application {
 
         @Override
         public void notificationOpened(OSNotificationOpenedResult result) {
+            Log.d("Opened", "Notif. Opened");
 
-            // Get custom datas from notification
             JSONObject data = result.getNotification().getAdditionalData();
             if (data != null) {
-                String myCustomData = data.optString("key", null);
+                String myCustomData0 = data.optString("senderId", null);
+                String myCustomData1 = data.optString("senderName", null);
+                String myCustomData2 = data.optString("senderImage", null);
+                Intent intent = new Intent(application, ChatDetailActivity.class);
+                intent.putExtra("userID", myCustomData0);
+                intent.putExtra("userName", myCustomData1);
+                intent.putExtra("profileURL", myCustomData2);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+                application.startActivity(intent);
             }
 
-            // React to button pressed
-            OSNotificationAction.ActionType actionType = result.getAction().getType();
-            if (actionType == OSNotificationAction.ActionType.ActionTaken)
-                Log.i("OneSignalExample", "Button pressed with id: " + result.getAction().getActionId());
 
-            // Launch new activity using Application object
-            startApp();
-        }
-
-        private void startApp() {
-            Intent intent = new Intent(application, ChatMainScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-            application.startActivity(intent);
         }
 
     }

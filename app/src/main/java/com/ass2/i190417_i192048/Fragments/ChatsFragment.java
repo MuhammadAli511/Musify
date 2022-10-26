@@ -54,12 +54,9 @@ public class ChatsFragment extends Fragment {
                 }
                 if (contactsList.size()!=0)
                 {
-                    Log.d("Hello1", "Hello1");
                     db.collection("Users").whereIn("userId", contactsList).get().addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
-                            Log.d("Hello2", "Hello2 " + task2.getResult().size());
                             for (int i = 0; i < task2.getResult().size(); i++) {
-                                Log.d("Hello3", "Hello3");
                                 list.add(task2.getResult().getDocuments().get(i).toObject(Users.class));
                             }
                             adapter.notifyDataSetChanged();

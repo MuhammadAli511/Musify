@@ -53,6 +53,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     MessageAdapter messageAdapter;
     String senderId1;
     String receiverId1;
+    FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
 
     @Override
@@ -76,6 +77,8 @@ public class ChatDetailActivity extends AppCompatActivity {
         chatDetailRecyclerView.setLayoutManager(layoutManager);
 
 
+
+
         final String senderId = mAuth.getCurrentUser().getUid();
         String receiverId = getIntent().getStringExtra("userID");
         String receiverName = getIntent().getStringExtra("userName");
@@ -95,6 +98,17 @@ public class ChatDetailActivity extends AppCompatActivity {
         String receiverRoom = receiverId + senderId;
         senderId1 = senderId;
         receiverId1 = receiverId;
+        final String[] senderName = {""};
+        final String[] senderImage = {""};
+
+        db1.collection("Users").document(senderId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                senderName[0] = documentSnapshot.getString("name");
+                senderImage[0] = documentSnapshot.getString("profileURL");
+
+            }
+        });
 
         // check for realtime updates on user status
         db.getReference().child("UsersStatus").child(receiverId).addValueEventListener(new ValueEventListener() {
@@ -177,18 +191,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                                         String token = documentSnapshot.getString("deviceID");
                                         try {
-                                            OneSignal.postNotification(new JSONObject("{'contents': {'en':'"+message+"'}, 'include_player_ids': ['" + token + "']}"),
-                                                    new OneSignal.PostNotificationResponseHandler() {
-                                                        @Override
-                                                        public void onSuccess(JSONObject response) {
-                                                            Log.d("OneSignalExample", "postNotification Success: " + response.toString());
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure(JSONObject response) {
-                                                            Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
-                                                        }
-                                                    });
+                                            OneSignal.postNotification(new JSONObject("{'contents': {'en':'"+message+"'}, 'include_player_ids': ['" + token + "'], 'data': {'senderId': '"+senderId+"', 'senderName': '"+senderName[0]+"' , 'senderImage': '"+senderImage[0]+"' }}"),null);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

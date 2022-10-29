@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.ass2.i190417_i192048.Models.Music;
 import com.ass2.i190417_i192048.R;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class PlayMusic extends AppCompatActivity {
 
     TextView musicTitle, currentTime;
     SeekBar musicSlider, volumeSlider;
-    ImageView musicImage, previousButton, pauseButton, nextButton, comment;
+    ImageView musicImage, previousButton, pauseButton, nextButton, comment, likedMusic, listenLaterButton;
     List<Music> musicList;
     Music currentSong;
     MediaPlayer mediaPlayer = MusicMediaPlayer.getInstance();
@@ -55,6 +57,9 @@ public class PlayMusic extends AppCompatActivity {
         pauseButton = findViewById(R.id.pauseButton);
         nextButton = findViewById(R.id.nextButton);
         comment = findViewById(R.id.comment);
+        likedMusic = findViewById(R.id.likedMusic);
+        listenLaterButton = findViewById(R.id.listenLaterButton);
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -76,6 +81,62 @@ public class PlayMusic extends AppCompatActivity {
 
             }
         });
+
+        likedMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String musicTitle = currentSong.getTitle();
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("LikedMusic").document(userID).collection("LikedMusic").document(musicTitle).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            // already liked
+                            db.collection("LikedMusic").document(userID).collection("LikedMusic").document(musicTitle).delete().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(PlayMusic.this, "Removed from Liked Music", Toast.LENGTH_SHORT).show();
+                                    likedMusic.setImageResource(R.drawable.heart);
+                                }
+                            });
+                            Toast.makeText(PlayMusic.this, "Music Unliked", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // not liked
+                            db.collection("LikedMusic").document(userID).collection("LikedMusic").document(musicTitle).set(currentSong);
+                            Toast.makeText(PlayMusic.this, "Liked", Toast.LENGTH_SHORT).show();
+                            likedMusic.setImageResource(R.drawable.whiteheart);
+                        }
+                    }
+                });
+
+            }
+        });
+
+        listenLaterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String musicTitle = currentSong.getTitle();
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("ListenLater").document(userID).collection("ListenLater").document(musicTitle).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            db.collection("ListenLater").document(userID).collection("ListenLater").document(musicTitle).delete().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(PlayMusic.this, "Removed from Listen Later", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Toast.makeText(PlayMusic.this, "Music Removed from Listen Later", Toast.LENGTH_SHORT).show();
+                        } else {
+                            db.collection("ListenLater").document(userID).collection("ListenLater").document(musicTitle).set(currentSong);
+                            Toast.makeText(PlayMusic.this, "Added to Listen Later", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+
+
 
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +223,6 @@ public class PlayMusic extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
             }
         });

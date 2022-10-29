@@ -99,6 +99,22 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
+        listenlater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreen.this, ListenLater.class);
+                startActivity(intent);
+            }
+        });
+
+        liked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreen.this, Liked.class);
+                startActivity(intent);
+            }
+        });
+
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -121,13 +121,14 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="37dp"
             android:layout_marginTop="20dp"
-            android:weightSum="5">
+            android:weightSum="3">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:src="@drawable/whiteheart">
+                android:id="@+id/likedMusic"
+                android:src="@drawable/heart">
 
             </ImageView>
 
@@ -136,15 +137,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:src="@drawable/download">
-
-            </ImageView>
-
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
+                android:id="@+id/listenLaterButton"
                 android:src="@drawable/linemusic">
 
             </ImageView>
@@ -159,14 +152,6 @@
 
             </ImageView>
 
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:src="@drawable/dots">
-
-            </ImageView>
 
         </LinearLayout>
 

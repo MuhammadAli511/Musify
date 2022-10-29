@@ -115,6 +115,14 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreen.this, SearchMusic.class);
+                startActivity(intent);
+            }
+        });
+
         profileDrawerLoader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

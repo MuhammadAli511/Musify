@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,8 @@ import com.ass2.i190417_i192048.MusicApp.MusicMediaPlayer;
 import com.ass2.i190417_i192048.MusicApp.PlayMusic;
 import com.ass2.i190417_i192048.R;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -58,6 +61,30 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
                 intent.putExtra("musicList", (Serializable)musicList);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+            }
+        });
+
+        holder.musicParentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int pos = holder.getAdapterPosition();
+                String title = musicList.get(pos).getTitle();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("Music").document(title).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String userId = task.getResult().getString("userID");
+                        if (userId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            musicList.remove(pos);
+                            notifyItemRemoved(pos);
+                            notifyItemRangeChanged(pos, musicList.size());
+                            db.collection("Music").document(title).delete();
+                        } else{
+                            Toast.makeText(mContext, "You can not delete this Music", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                return true;
             }
         });
 

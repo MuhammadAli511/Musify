@@ -129,6 +129,7 @@
             android:layout_height="30dp"
             android:src="@drawable/ic_baseline_camera_alt_24"
             android:layout_gravity="center"
+            android:id="@+id/selectImageButton"
             android:layout_marginLeft="16dp">
         </ImageView>
 

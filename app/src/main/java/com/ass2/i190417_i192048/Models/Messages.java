@@ -8,6 +8,8 @@ public class Messages {
     String chatReceiveMsgID;
     String senderRoom;
     String receiverRoom;
+    String msgType;
+    String imageURL;
 
     public Messages() {}
 
@@ -76,5 +78,21 @@ public class Messages {
 
     public void setReceiverRoom(String receiverRoom) {
         this.receiverRoom = receiverRoom;
+    }
+
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

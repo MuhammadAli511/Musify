@@ -34,6 +34,15 @@
 
             </TextView>
 
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/senderImageMsg"
+                android:src="@drawable/person"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone">
+            </ImageView>
+
             <TextView
                 android:id="@+id/senderTime"
                 android:layout_width="wrap_content"

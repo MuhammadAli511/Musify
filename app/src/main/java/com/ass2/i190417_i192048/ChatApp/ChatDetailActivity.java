@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,26 +18,39 @@ import android.widget.Toast;
 
 import com.ass2.i190417_i192048.Adapters.MessageAdapter;
 import com.ass2.i190417_i192048.Models.Messages;
+import com.ass2.i190417_i192048.Models.Users;
+import com.ass2.i190417_i192048.MusicApp.Signin;
+import com.ass2.i190417_i192048.MusicApp.Signup;
 import com.ass2.i190417_i192048.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.List;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.onesignal.OneSignal;
 
 import org.json.JSONException;
@@ -54,8 +69,11 @@ public class ChatDetailActivity extends AppCompatActivity {
     String senderId1;
     String receiverId1;
     FirebaseFirestore db1 = FirebaseFirestore.getInstance();
-    String senderRoom1;
-    String receiverRoom1;
+    ImageView selectImageButton;
+    Uri imageURISelecting;
+    String receiverId;
+    String receiverName;
+    String receiverImage;
 
 
     @Override
@@ -69,6 +87,11 @@ public class ChatDetailActivity extends AppCompatActivity {
         sendMsg = findViewById(R.id.sendMsg);
         messageToSend = findViewById(R.id.messageToSend);
         status = findViewById(R.id.status);
+        selectImageButton = findViewById(R.id.selectImageButton);
+
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
         chatDetailRecyclerView = findViewById(R.id.chatDetailRecyclerView);
@@ -80,9 +103,19 @@ public class ChatDetailActivity extends AppCompatActivity {
 
 
         final String senderId = mAuth.getCurrentUser().getUid();
-        String receiverId = getIntent().getStringExtra("userID");
-        String receiverName = getIntent().getStringExtra("userName");
-        String receiverImage = getIntent().getStringExtra("profileURL");
+        receiverId = getIntent().getStringExtra("userID");
+        receiverName = getIntent().getStringExtra("userName");
+        receiverImage = getIntent().getStringExtra("profileURL");
+
+        selectImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 55);
+            }
+        });
 
         userName.setText(receiverName);
         Glide.with(this).load(receiverImage).into(userImage);
@@ -172,7 +205,6 @@ public class ChatDetailActivity extends AppCompatActivity {
                 String dateText = formatter.format(cal.getTime());
                 messages.setTimestamp(dateText);
                 messageToSend.setText("");
-                // get a field from the user document
 
 
                 messages.setSenderRoom(senderRoom);
@@ -181,6 +213,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                 String chatReceiveMsgIDStr = db.getReference().child("Chats").child(receiverRoom).push().getKey();
                 messages.setChatSendMsgID(chatSendMsgIDStr);
                 messages.setChatReceiveMsgID(chatReceiveMsgIDStr);
+                messages.setMsgType("Text");
 
 
                 db.getReference().child("Chats").child(senderRoom).child(chatSendMsgIDStr).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -221,5 +254,84 @@ public class ChatDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 55 && resultCode == RESULT_OK) {
+            imageURISelecting = data.getData();
+            Log.d("Image Selected ", "Hello Image Selected");
+            sendImage();
+        }
+    }
+
+    public void sendImage(){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        // get timestamp in milliseconds
+        long timestamp = System.currentTimeMillis();
+        StorageReference imageRef = storageRef.child("images/" + timestamp);
+        UploadTask uploadTask = imageRef.putFile(imageURISelecting);
+        uploadTask.addOnFailureListener(new OnFailureListener(){
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(ChatDetailActivity.this, "Image upload failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadURL) {
+                        final String senderId = mAuth.getCurrentUser().getUid();
+                        String senderRoom = senderId + receiverId;
+                        String receiverRoom = receiverId + senderId;
+                        senderId1 = senderId;
+                        receiverId1 = receiverId;
+                        final String[] senderName = {""};
+                        final String[] senderImage = {""};
+                        String imageURLStr = downloadURL.toString();
+                        Messages messages = new Messages(senderId, imageURLStr);
+                        Date date = new Date();
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy HH:mm");
+                        String dateText = formatter.format(cal.getTime());
+                        messages.setTimestamp(dateText);
+                        messageToSend.setText("");
+                        messages.setSenderRoom(senderRoom);
+                        messages.setReceiverRoom(receiverRoom);
+                        String chatSendMsgIDStr = db.getReference().child("Chats").child(senderRoom).push().getKey();
+                        String chatReceiveMsgIDStr = db.getReference().child("Chats").child(receiverRoom).push().getKey();
+                        messages.setChatSendMsgID(chatSendMsgIDStr);
+                        messages.setChatReceiveMsgID(chatReceiveMsgIDStr);
+                        messages.setMsgType("Image");
+                        String message12 = "Image Received";
+                        db.getReference().child("Chats").child(senderRoom).child(chatSendMsgIDStr).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                db.getReference("Chats").child(receiverRoom).child(chatReceiveMsgIDStr).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        FirebaseFirestore.getInstance().collection("Users").document(receiverId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                String token = documentSnapshot.getString("deviceID");
+                                                try {
+                                                    OneSignal.postNotification(new JSONObject("{'contents': {'en':'"+message12+"'}, 'include_player_ids': ['" + token + "'], 'data': {'senderId': '"+senderId+"', 'senderName': '"+senderName[0]+"' , 'senderImage': '"+senderImage[0]+"' }}"),null);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
     }
 }

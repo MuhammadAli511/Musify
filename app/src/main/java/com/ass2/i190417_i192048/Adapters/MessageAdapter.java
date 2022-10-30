@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ass2.i190417_i192048.Models.Messages;
 import com.ass2.i190417_i192048.R;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -57,23 +58,41 @@ public class MessageAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Messages messages = messagesList.get(position);
         if (holder.getClass() == SenderViewHolder.class) {
-            ((SenderViewHolder) holder).senderMsg.setText(messages.getMessage());
+            if (messages.getMsgType().equals("Image")){
+                ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).senderImageMsg.setVisibility(View.VISIBLE);
+                Glide.with(context).load(messages.getMessage()).into(((SenderViewHolder) holder).senderImageMsg);
+            } else if (messages.getMsgType().equals("Text")){
+                ((SenderViewHolder) holder).senderMsg.setVisibility(View.VISIBLE);
+                ((SenderViewHolder) holder).senderImageMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).senderMsg.setText(messages.getMessage());
+            }
+
             ((SenderViewHolder) holder).senderTime.setText(messages.getTimestamp().toString());
             ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.person);
+
+
+
+
             ((SenderViewHolder) holder).msgParentLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    //Log.d("Sender Room : ", messages.getSenderRoom() + " Hello ");
-                    //Log.d("Receiver Room : ", messages.getReceiverRoom() + " Hello ");
-                    //Log.d("Send Chat Id : ", messages.getChatSendMsgID() + " Hello ");
-                    //Log.d("Recive Chat Id : ", messages.getChatReceiveMsgID() + " Hello ");
                     FirebaseDatabase.getInstance().getReference().child("Chats").child(messages.getSenderRoom()).child(messages.getChatSendMsgID()).removeValue();
                     FirebaseDatabase.getInstance().getReference().child("Chats").child(messages.getReceiverRoom()).child(messages.getChatReceiveMsgID()).removeValue();
                     return true;
                 }
             });
         } else {
-            ((ReceiverViewHolder) holder).receiverMsg.setText(messages.getMessage());
+            if (messages.getMsgType().equals("Image")){
+                ((ReceiverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                ((ReceiverViewHolder) holder).receiverImageMsg.setVisibility(View.VISIBLE);
+                Glide.with(context).load(messages.getMessage()).into(((ReceiverViewHolder) holder).receiverImageMsg);
+            } else if (messages.getMsgType().equals("Text")) {
+                ((ReceiverViewHolder) holder).receiverMsg.setVisibility(View.VISIBLE);
+                ((ReceiverViewHolder) holder).receiverImageMsg.setVisibility(View.GONE);
+                ((ReceiverViewHolder) holder).receiverMsg.setText(messages.getMessage());
+            }
+
             ((ReceiverViewHolder) holder).receiverTime.setText(messages.getTimestamp().toString());
             ((ReceiverViewHolder) holder).receiverImage.setImageResource(R.drawable.ic_baseline_person_outline_24);
         }
@@ -88,12 +107,13 @@ public class MessageAdapter extends RecyclerView.Adapter {
     public class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         TextView receiverMsg, receiverTime;
-        ImageView receiverImage;
+        ImageView receiverImage, receiverImageMsg;
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             receiverMsg = itemView.findViewById(R.id.receiverMsg);
             receiverTime = itemView.findViewById(R.id.receiverTime);
             receiverImage = itemView.findViewById(R.id.receiverImage);
+            receiverImageMsg = itemView.findViewById(R.id.receiverImageMsg);
 
         }
     }
@@ -101,7 +121,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     public class SenderViewHolder extends RecyclerView.ViewHolder {
 
         TextView senderMsg, senderTime;
-        ImageView senderImage;
+        ImageView senderImage, senderImageMsg;
         RelativeLayout msgParentLayout;
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,7 +129,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             senderTime = itemView.findViewById(R.id.senderTime);
             senderImage = itemView.findViewById(R.id.senderImage);
             msgParentLayout = itemView.findViewById(R.id.msgParentLayout);
-
+            senderImageMsg = itemView.findViewById(R.id.senderImageMsg);
         }
     }
 }

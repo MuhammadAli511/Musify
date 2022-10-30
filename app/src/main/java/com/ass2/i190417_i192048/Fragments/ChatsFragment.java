@@ -65,20 +65,12 @@ public class ChatsFragment extends Fragment {
                 }
             }
         });
-        // get all users with given ids
-
-
-
-
-
-
-
-
         return view;
     }
 
     @Override
     public void onResume() {
+        list.clear();
         adapter.notifyDataSetChanged();
         super.onResume();
     }

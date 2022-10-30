@@ -24,6 +24,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.net.URI;
+
 public class UploadMusic extends AppCompatActivity {
     ImageView back, uploadImage;
     Button  uploadMusic;
@@ -35,6 +37,7 @@ public class UploadMusic extends AppCompatActivity {
     Uri musicURI;
     Uri imageURI;
     ProgressDialog progressDialog;
+
 
 
     @Override

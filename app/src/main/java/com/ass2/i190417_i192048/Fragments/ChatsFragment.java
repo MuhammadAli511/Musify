@@ -68,6 +68,8 @@ public class ChatsFragment extends Fragment {
         adapter = new UsersAdapter(list, getContext());
         recyclerView.setAdapter(adapter);
 
+        // clear list
+        list.clear();
         getData3();
         return view;
     }

@@ -4,6 +4,10 @@ public class Messages {
     String userID;
     String message;
     String timestamp;
+    String chatSendMsgID;
+    String chatReceiveMsgID;
+    String senderRoom;
+    String receiverRoom;
 
     public Messages() {}
 
@@ -40,5 +44,37 @@ public class Messages {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getChatSendMsgID() {
+        return chatSendMsgID;
+    }
+
+    public void setChatSendMsgID(String chatSendMsgID) {
+        this.chatSendMsgID = chatSendMsgID;
+    }
+
+    public String getChatReceiveMsgID() {
+        return chatReceiveMsgID;
+    }
+
+    public void setChatReceiveMsgID(String chatReceiveMsgID) {
+        this.chatReceiveMsgID = chatReceiveMsgID;
+    }
+
+    public String getSenderRoom() {
+        return senderRoom;
+    }
+
+    public void setSenderRoom(String senderRoom) {
+        this.senderRoom = senderRoom;
+    }
+
+    public String getReceiverRoom() {
+        return receiverRoom;
+    }
+
+    public void setReceiverRoom(String receiverRoom) {
+        this.receiverRoom = receiverRoom;
     }
 }

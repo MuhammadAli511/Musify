@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ass2.i190417_i192048.Models.Messages;
 import com.ass2.i190417_i192048.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -57,6 +60,18 @@ public class MessageAdapter extends RecyclerView.Adapter {
             ((SenderViewHolder) holder).senderMsg.setText(messages.getMessage());
             ((SenderViewHolder) holder).senderTime.setText(messages.getTimestamp().toString());
             ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.person);
+            ((SenderViewHolder) holder).msgParentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //Log.d("Sender Room : ", messages.getSenderRoom() + " Hello ");
+                    //Log.d("Receiver Room : ", messages.getReceiverRoom() + " Hello ");
+                    //Log.d("Send Chat Id : ", messages.getChatSendMsgID() + " Hello ");
+                    //Log.d("Recive Chat Id : ", messages.getChatReceiveMsgID() + " Hello ");
+                    FirebaseDatabase.getInstance().getReference().child("Chats").child(messages.getSenderRoom()).child(messages.getChatSendMsgID()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("Chats").child(messages.getReceiverRoom()).child(messages.getChatReceiveMsgID()).removeValue();
+                    return true;
+                }
+            });
         } else {
             ((ReceiverViewHolder) holder).receiverMsg.setText(messages.getMessage());
             ((ReceiverViewHolder) holder).receiverTime.setText(messages.getTimestamp().toString());
@@ -87,11 +102,13 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         TextView senderMsg, senderTime;
         ImageView senderImage;
+        RelativeLayout msgParentLayout;
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMsg = itemView.findViewById(R.id.senderMsg);
             senderTime = itemView.findViewById(R.id.senderTime);
             senderImage = itemView.findViewById(R.id.senderImage);
+            msgParentLayout = itemView.findViewById(R.id.msgParentLayout);
 
         }
     }

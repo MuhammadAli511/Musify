@@ -54,6 +54,8 @@ public class ChatDetailActivity extends AppCompatActivity {
     String senderId1;
     String receiverId1;
     FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+    String senderRoom1;
+    String receiverRoom1;
 
 
     @Override
@@ -173,12 +175,20 @@ public class ChatDetailActivity extends AppCompatActivity {
                 // get a field from the user document
 
 
-                db.getReference().child("Chats").child(senderRoom).push().setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
+                messages.setSenderRoom(senderRoom);
+                messages.setReceiverRoom(receiverRoom);
+                String chatSendMsgIDStr = db.getReference().child("Chats").child(senderRoom).push().getKey();
+                String chatReceiveMsgIDStr = db.getReference().child("Chats").child(receiverRoom).push().getKey();
+                messages.setChatSendMsgID(chatSendMsgIDStr);
+                messages.setChatReceiveMsgID(chatReceiveMsgIDStr);
+
+
+                db.getReference().child("Chats").child(senderRoom).child(chatSendMsgIDStr).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        db.getReference().child("Chats").child(receiverRoom).push().setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    public void onSuccess(Void unused) {
+                        db.getReference("Chats").child(receiverRoom).child(chatReceiveMsgIDStr).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
+                            public void onSuccess(Void unused) {
                                 FirebaseFirestore.getInstance().collection("Users").document(receiverId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -190,19 +200,12 @@ public class ChatDetailActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-
-
                             }
                         });
                     }
                 });
             }
         });
-
-
-
-
-
     }
 
     @Override

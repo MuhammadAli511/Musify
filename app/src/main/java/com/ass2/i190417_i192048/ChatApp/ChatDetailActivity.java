@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,6 +113,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 55);
             }
@@ -261,18 +263,26 @@ public class ChatDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 55 && resultCode == RESULT_OK) {
             imageURISelecting = data.getData();
-            Log.d("Image Selected ", "Hello Image Selected");
-            sendImage();
+            ClipData mClipData = data.getClipData();
+            if (imageURISelecting!=null){
+                sendImage(imageURISelecting);
+            } else {
+                for (int i = 0; i < mClipData.getItemCount(); i++) {
+                    ClipData.Item item = mClipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    sendImage(uri);
+                }
+            }
         }
     }
 
-    public void sendImage(){
+    public void sendImage(Uri val){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         // get timestamp in milliseconds
         long timestamp = System.currentTimeMillis();
         StorageReference imageRef = storageRef.child("images/" + timestamp);
-        UploadTask uploadTask = imageRef.putFile(imageURISelecting);
+        UploadTask uploadTask = imageRef.putFile(val);
         uploadTask.addOnFailureListener(new OnFailureListener(){
             @Override
             public void onFailure(@NonNull Exception exception) {

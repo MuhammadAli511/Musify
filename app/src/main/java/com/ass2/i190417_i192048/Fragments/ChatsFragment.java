@@ -32,17 +32,7 @@ public class ChatsFragment extends Fragment {
     UsersAdapter adapter;
     RecyclerView recyclerView;
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_chats, container, false);
-
-        recyclerView = view.findViewById(R.id.chatsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new UsersAdapter(list, getContext());
-        recyclerView.setAdapter(adapter);
-
+    public void getData3(){
         db = FirebaseFirestore.getInstance();
         String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         List<String> contactsList = new ArrayList<>();
@@ -65,13 +55,21 @@ public class ChatsFragment extends Fragment {
                 }
             }
         });
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_chats, container, false);
+
+        recyclerView = view.findViewById(R.id.chatsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new UsersAdapter(list, getContext());
+        recyclerView.setAdapter(adapter);
+
+        getData3();
         return view;
     }
 
-    @Override
-    public void onResume() {
-        list.clear();
-        adapter.notifyDataSetChanged();
-        super.onResume();
-    }
 }
